@@ -7,7 +7,7 @@ const client = new OpenAI({
     apiKey: process.env.DEEPSEEK_API_KEY,
     baseURL: process.env.DEEPSEEK_BASE_URL
 });
-// process ? 进程对象
+// process  进程对象
 //操作系统的核心概念
 //node index.mjs 本质是启动进程
 //这是分配资源（内存，CPU，IO）的最小单位
