@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="《遗境千年》非遗数字娱乐创作平台创意提案" />
   <title>遗境千年｜非遗数字娱乐创作平台创意提案</title>
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop stop-color='%23130d0b'/%3E%3Cstop offset='.62' stop-color='%23301813'/%3E%3Cstop offset='1' stop-color='%236b1d18'/%3E%3C/linearGradient%3E%3ClinearGradient id='gold' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23f6df9a'/%3E%3Cstop offset='1' stop-color='%23b8832f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='5' y='5' width='54' height='54' rx='15' fill='url(%23bg)'/%3E%3Cpath d='M13 48c4-7 11-7 15-2 3-7 12-8 17-1 4-2 8-1 10 3v7H9v-5c1-2 2-3 4-2Z' fill='%23efe0b2' opacity='.95'/%3E%3Cpath d='M10 49c7-4 12-3 17 1 5-5 12-5 18 0 4-3 8-3 11 0' fill='none' stroke='%23b8832f' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M20 38c6-4 18-4 24 0' fill='none' stroke='url(%23gold)' stroke-width='4' stroke-linecap='round' opacity='.95'/%3E%3Cpath d='M32 14c5 7 9 12 9 19 0 7-4 11-9 11s-9-4-9-11c0-7 4-12 9-19Z' fill='url(%23gold)'/%3E%3Cpath d='M32 23c2 3 4 6 4 10 0 3-2 5-4 5s-4-2-4-5c0-4 2-7 4-10Z' fill='%23301813' opacity='.82'/%3E%3C/svg%3E" />
   <style>
     :root {
       color-scheme: light;
@@ -1006,6 +1008,742 @@
       }
     }
 
+    /* 古今共屏增强层：轻量材质、金色光河、徽章入口与可访问性 */
+    .read-progress {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 30;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, .08);
+      pointer-events: none;
+    }
+
+    .read-progress span {
+      display: block;
+      width: var(--read-progress, 0%);
+      height: 100%;
+      background: linear-gradient(90deg, #c0392b, #f2c66d, #9fb7c9);
+      transition: width .12s linear;
+    }
+
+    .nav-links a.is-active {
+      color: var(--gold-light);
+      border-bottom-color: currentColor;
+    }
+
+    .timeline-panel {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      contain: layout style paint;
+      border-radius: 24px;
+      background:
+        linear-gradient(90deg, rgba(126, 52, 28, .96) 0%, rgba(154, 91, 39, .88) 38%, rgba(210, 168, 86, .54) 50%, rgba(38, 64, 72, .86) 64%, rgba(18, 28, 32, .96) 100%);
+      border: 1px solid rgba(255, 255, 255, .18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16);
+    }
+
+    .timeline-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: .15;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, .28) 0 1px, transparent 1.5px),
+        linear-gradient(45deg, rgba(255, 255, 255, .08) 25%, transparent 25% 50%, rgba(255, 255, 255, .06) 50% 75%, transparent 75%);
+      background-size: 18px 18px, 32px 32px;
+    }
+
+    .timeline-panel::after {
+      content: "";
+      position: absolute;
+      left: 14%;
+      right: 14%;
+      top: 50%;
+      z-index: 1;
+      height: 72px;
+      border-radius: 999px;
+      transform: translateY(-50%);
+      background: linear-gradient(90deg, transparent, rgba(255, 204, 103, .34), rgba(230, 236, 231, .18), transparent);
+      border-top: 1px solid rgba(255, 220, 142, .28);
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+      pointer-events: none;
+    }
+
+    .home-lightstream {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: .75;
+    }
+
+    .ancient,
+    .modern,
+    .bridge {
+      z-index: 3;
+    }
+
+    .ancient,
+    .modern {
+      overflow: hidden;
+      border-radius: 24px;
+      transition: transform .35s ease;
+      contain: layout style paint;
+    }
+
+    .ancient {
+      background:
+        radial-gradient(circle at 22% 24%, rgba(255, 190, 87, .30), transparent 20%),
+        radial-gradient(circle at 75% 72%, rgba(192, 57, 43, .26), transparent 24%),
+        linear-gradient(140deg, rgba(67, 23, 19, .94), rgba(128, 59, 31, .9) 48%, rgba(194, 125, 48, .82));
+    }
+
+    .modern {
+      background:
+        radial-gradient(circle at 74% 18%, rgba(116, 187, 205, .22), transparent 22%),
+        linear-gradient(145deg, rgba(16, 32, 36, .94), rgba(32, 62, 69, .9) 52%, rgba(13, 20, 24, .96));
+    }
+
+    .ancient::before {
+      content: "";
+      position: absolute;
+      right: 38px;
+      top: 38px;
+      width: 76px;
+      height: 104px;
+      border-radius: 50% 50% 46% 46%;
+      background:
+        linear-gradient(90deg, transparent 46%, rgba(255, 219, 129, .58) 47% 53%, transparent 54%),
+        radial-gradient(circle at 50% 28%, rgba(255, 232, 160, .72), transparent 18%),
+        linear-gradient(135deg, rgba(192, 57, 43, .78), rgba(215, 138, 52, .42));
+      border: 1px solid rgba(255, 218, 132, .38);
+      box-shadow: inset 0 0 18px rgba(255, 234, 174, .16);
+      animation: lantern-sway 4.8s ease-in-out infinite;
+      transform-origin: 50% -18px;
+    }
+
+    .ancient::after {
+      content: "";
+      position: absolute;
+      left: 30px;
+      bottom: 46px;
+      width: 58%;
+      height: 112px;
+      opacity: .46;
+      background:
+        linear-gradient(90deg, transparent 0 8%, rgba(14, 9, 7, .46) 9% 13%, transparent 14% 30%, rgba(14, 9, 7, .42) 31% 36%, transparent 37% 58%, rgba(14, 9, 7, .45) 59% 64%, transparent 65%),
+        linear-gradient(180deg, transparent 0 56%, rgba(255, 206, 112, .22) 57% 60%, transparent 61%);
+      border-radius: 999px 999px 20px 20px;
+      animation: crowd-drift 8s ease-in-out infinite;
+    }
+
+    .ancient h3,
+    .modern h3 {
+      color: #ffe7a8;
+      font-family: "STKaiti", "KaiTi", "FangSong", serif;
+      font-weight: 300;
+      letter-spacing: .08em;
+      text-shadow: none;
+    }
+
+    .ancient p,
+    .modern p {
+      max-width: 78%;
+    }
+
+    .screen-card {
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, .26);
+      background: rgba(255, 255, 255, .10);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+
+    .screen-card:hover,
+    .screen-card:focus-within {
+      transform: translateY(-6px);
+      border-color: rgba(255, 220, 142, .46);
+      box-shadow: inset 0 0 0 1px rgba(255, 220, 142, .18), 0 12px 26px rgba(0, 0, 0, .18);
+    }
+
+    .screen-card:last-child::after {
+      content: "";
+      display: block;
+      width: 68%;
+      height: 7px;
+      margin-top: 16px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2e8b57 0 37%, rgba(255, 255, 255, .18) 37% 100%);
+      animation: progress-fill 5.8s ease-in-out infinite;
+    }
+
+    .recommend-text {
+      transition: opacity .22s ease;
+    }
+
+    .title-letters span {
+      display: inline-block;
+      opacity: 0;
+      animation: letter-rise .48s ease forwards;
+      animation-delay: calc(var(--i) * 90ms);
+    }
+
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: max-content;
+      animation: type-in 2.2s steps(8, end) both;
+    }
+
+    @keyframes letter-rise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes type-in {
+      from {
+        clip-path: inset(0 100% 0 0);
+      }
+
+      to {
+        clip-path: inset(0 0 0 0);
+      }
+    }
+
+    .bridge {
+      width: min(560px, 68vw);
+      padding: 0;
+      gap: clamp(10px, 1.2vw, 16px);
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .bridge a {
+      position: relative;
+      min-height: 94px;
+      aspect-ratio: 1;
+      padding: 12px;
+      border-radius: 50%;
+      color: #fff8e7;
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255, 236, 174, .30), transparent 28%),
+        rgba(80, 42, 28, .68);
+      border: 1px solid rgba(255, 220, 142, .42);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+      transition: transform .32s cubic-bezier(.2, .9, .2, 1.35), background .28s ease, border-color .28s ease;
+      animation: badge-breathe 2s ease-in-out infinite;
+    }
+
+    .bridge a:nth-child(1)::before {
+      content: "火";
+    }
+
+    .bridge a:nth-child(2)::before {
+      content: "傩";
+    }
+
+    .bridge a:nth-child(3)::before {
+      content: "影";
+    }
+
+    .bridge a:nth-child(4)::before {
+      content: "剪";
+    }
+
+    .bridge a:nth-child(5)::before {
+      content: "糖";
+    }
+
+    .bridge a::before {
+      display: block;
+      margin-bottom: 2px;
+      color: #ffd36a;
+      font-size: 1.55rem;
+      line-height: 1;
+      font-family: "STKaiti", "KaiTi", serif;
+    }
+
+    .bridge a::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 10px);
+      padding: 5px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      font-size: .72rem;
+      color: #1b120b;
+      background: rgba(255, 220, 142, .92);
+      opacity: 0;
+      transform: translate(-50%, -4px) scale(.94);
+      transition: opacity .22s ease, transform .22s ease;
+      pointer-events: none;
+    }
+
+    .bridge a:hover,
+    .bridge a:focus-visible {
+      transform: translateY(-6px) scale(1.1);
+      border-color: rgba(255, 232, 160, .82);
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255, 236, 174, .42), transparent 28%),
+        rgba(192, 57, 43, .78);
+      outline: 2px solid rgba(255, 220, 142, .72);
+      outline-offset: 4px;
+    }
+
+    .bridge a:hover::after,
+    .bridge a:focus-visible::after {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    .bridge a.is-rippling {
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16), 0 0 0 12px rgba(255, 220, 142, .12);
+    }
+
+    .btn,
+    .nav-links a,
+    .bridge a,
+    footer .btn {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:active,
+    .nav-links a:active,
+    .bridge a:active,
+    footer .btn:active {
+      transform: translateY(1px) scale(.98);
+    }
+
+    .home-in-view .ancient {
+      transform: translateY(var(--home-left-shift, 0px));
+    }
+
+    .home-in-view .modern {
+      transform: translateY(var(--home-right-shift, 0px));
+    }
+
+    section {
+      margin-block: clamp(72px, 10vw, 138px);
+    }
+
+    :focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 4px;
+    }
+
+    .skeleton {
+      border-radius: 24px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .18), rgba(255, 255, 255, .08));
+    }
+
+    @keyframes lantern-sway {
+
+      0%,
+      100% {
+        transform: rotate(-2deg);
+      }
+
+      50% {
+        transform: rotate(3deg);
+      }
+    }
+
+    @keyframes crowd-drift {
+
+      0%,
+      100% {
+        transform: translateX(-4px);
+      }
+
+      50% {
+        transform: translateX(10px);
+      }
+    }
+
+    @keyframes badge-breathe {
+
+      0%,
+      100% {
+        opacity: .88;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes progress-fill {
+
+      0%,
+      100% {
+        background: linear-gradient(90deg, #2e8b57 0 37%, rgba(255, 255, 255, .18) 37% 100%);
+      }
+
+      50% {
+        background: linear-gradient(90deg, #2e8b57 0 64%, rgba(255, 255, 255, .18) 64% 100%);
+      }
+    }
+
+    @media (prefers-contrast: high) {
+
+      .panel,
+      .card,
+      .mini,
+      .screen-card,
+      .bridge a {
+        border-color: currentColor;
+      }
+
+      .nav-links a.is-active {
+        outline: 2px solid currentColor;
+      }
+    }
+
+    /* 本轮修正：标题两行、首页中轴突出、Logo 与 hover 精修 */
+    .sub-eyebrow {
+      display: block;
+      width: max-content;
+      margin: -10px 0 var(--space-2);
+      padding: .28rem .72rem;
+      border-radius: 999px;
+      color: #fff4dc;
+      font-size: var(--small);
+      letter-spacing: .18em;
+      background: rgba(192, 57, 43, .22);
+      border: 1px solid rgba(255, 220, 142, .24);
+    }
+
+    h1 {
+      white-space: nowrap;
+      word-break: keep-all;
+      font-size: clamp(4.1rem, 8.6vw, 8rem);
+      letter-spacing: .06em;
+    }
+
+    .section-head h2 span {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .section-head h2 span:first-child {
+      color: #fb923c;
+      font-size: .52em;
+      letter-spacing: .16em;
+      margin-bottom: 10px;
+    }
+
+    .brand-mark {
+      position: relative;
+      color: transparent;
+      overflow: hidden;
+    }
+
+    .brand-mark::before {
+      content: none !important;
+      display: none !important;
+    }
+
+    .brand-mark::after {
+      content: "遗";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #fff4dc;
+      font-family: "STKaiti", "KaiTi", serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .timeline-panel {
+      grid-template-columns: minmax(260px, .82fr) minmax(260px, .82fr);
+      overflow: visible;
+      padding-inline: clamp(16px, 2vw, 26px);
+      gap: clamp(24px, 8vw, 148px);
+    }
+
+    .timeline-panel::after {
+      left: 39%;
+      right: 39%;
+      height: 88px;
+      opacity: .95;
+      z-index: 4;
+      box-shadow: inset 0 0 0 1px rgba(255, 220, 142, .12);
+    }
+
+    .ancient,
+    .modern {
+      opacity: .82;
+      filter: saturate(.82) brightness(.92);
+    }
+
+    .ancient::before,
+    .ancient::after,
+    .modern::before,
+    .modern::after {
+      opacity: .28;
+    }
+
+    .bridge {
+      z-index: 8;
+      width: min(430px, 44vw);
+      gap: 10px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      justify-content: center;
+    }
+
+    .bridge a {
+      min-height: 82px;
+      max-width: 82px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16), 0 10px 24px rgba(0, 0, 0, .22);
+    }
+
+    .bridge a:hover,
+    .bridge a:focus-visible {
+      transform: translateY(-7px) scale(1.12);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22), 0 16px 34px rgba(242, 198, 109, .24);
+    }
+
+    .card,
+    .mini,
+    .art-card,
+    .node,
+    .flow-step,
+    .screen-card {
+      transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, background .28s ease;
+    }
+
+    .card:hover,
+    .mini:hover,
+    .art-card:hover,
+    .node:hover,
+    .flow-step:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 220, 142, .42);
+      box-shadow: inset 0 0 0 1px rgba(255, 220, 142, .12), 0 16px 36px rgba(0, 0, 0, .16);
+    }
+
+    @media (max-width: 1040px) {
+      .timeline-panel {
+        gap: var(--space-2);
+        padding-inline: 0;
+      }
+
+      .bridge {
+        width: auto;
+        transform: none;
+      }
+
+      .ancient,
+      .modern {
+        opacity: 1;
+        filter: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: clamp(3.1rem, 14vw, 4.8rem);
+        letter-spacing: .03em;
+      }
+
+      .section-head h2 span {
+        white-space: normal;
+      }
+    }
+
+    /* 本轮修正：favicon、竖排五艺入口、导航定位、阶段均分 */
+    html {
+      scroll-padding-top: 86px;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      pointer-events: auto;
+      isolation: isolate;
+    }
+
+    .hero,
+    main,
+    footer {
+      position: relative;
+      z-index: 0;
+    }
+
+    .nav *,
+    .nav a {
+      pointer-events: auto;
+    }
+
+    .hero::before,
+    .hero::after,
+    .phone-stage::before,
+    .phone-stage::after,
+    .timeline-panel::before,
+    .timeline-panel::after,
+    body::before,
+    body::after {
+      pointer-events: none;
+    }
+
+    .timeline-panel {
+      grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr);
+      min-height: 560px;
+      overflow: hidden;
+    }
+
+    .bridge {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 20;
+      width: 108px;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 0;
+      background: linear-gradient(180deg, rgba(255, 219, 128, .18), rgba(255, 219, 128, .06));
+      border-radius: 999px;
+      border: 1px solid rgba(255, 220, 142, .22);
+    }
+
+    .bridge a {
+      width: 76px;
+      min-height: 76px;
+      max-width: 76px;
+      aspect-ratio: 1;
+      padding: 8px 6px;
+      font-size: .72rem;
+      line-height: 1.25;
+      text-align: center;
+      writing-mode: horizontal-tb;
+      overflow-wrap: anywhere;
+      word-break: keep-all;
+    }
+
+    .bridge a::before {
+      margin-bottom: 2px;
+      font-size: 1.35rem;
+    }
+
+    .bridge span {
+      display: block;
+      margin-top: 2px;
+      font-size: .7rem;
+      line-height: 1.2;
+    }
+
+    .bridge a::after {
+      left: calc(100% + 10px);
+      top: 50%;
+      transform: translate(0, -50%) scale(.94);
+    }
+
+    .bridge a:hover::after,
+    .bridge a:focus-visible::after {
+      transform: translate(0, -50%) scale(1);
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: stretch;
+      gap: clamp(18px, 2.2vw, 30px);
+    }
+
+    .roadmap .mini {
+      width: 100%;
+      min-height: 230px;
+    }
+
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cards .wide,
+    .cards .full {
+      grid-column: span 1;
+    }
+
+    @media (max-width: 1040px) {
+      .timeline-panel {
+        min-height: auto;
+      }
+
+      .bridge {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        transform: none;
+        flex-direction: row;
+        border-radius: 28px;
+      }
+
+      .bridge a {
+        width: auto;
+        max-width: none;
+      }
+
+      .roadmap,
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 本轮修正：彻底删除顶部斜色带，修正图鉴区均分 */
+    .hero::before,
+    .hero::after,
+    .phone-stage::before,
+    .phone-stage::after {
+      display: none !important;
+      content: none !important;
+      background: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    #community .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+      gap: clamp(18px, 2.4vw, 32px);
+    }
+
+    #community .card {
+      width: 100%;
+      min-height: 260px;
+    }
+
+    @media (max-width: 820px) {
+      #community .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
 
       *,
@@ -1023,8 +1761,22 @@
         filter: none;
       }
 
-      canvas#particle-canvas {
+      canvas#particle-canvas,
+      .home-lightstream {
         display: none;
+      }
+
+      .title-letters span,
+      .typewriter,
+      .ancient,
+      .modern,
+      .phone,
+      .bridge a,
+      .screen-card,
+      .screen-card:last-child::after {
+        animation: none !important;
+        transform: none !important;
+        transition: none !important;
       }
     }
   </style>
@@ -1033,6 +1785,7 @@
 <body>
   <a class="skip-link" href="#main">跳到正文</a>
   <canvas id="particle-canvas" aria-hidden="true"></canvas>
+  <div class="read-progress" aria-hidden="true"><span></span></div>
 
   <div class="page">
     <nav class="nav" aria-label="页面导航">
@@ -1046,7 +1799,6 @@
           <a href="#home">首页</a>
           <a href="#story">主玩法</a>
           <a href="#arts">五艺</a>
-          <a href="#tech">技术</a>
           <a href="#roadmap">计划</a>
         </div>
       </div>
@@ -1055,12 +1807,13 @@
     <header class="hero" id="top">
       <div class="wrap hero-grid">
         <div class="reveal">
-          <span class="eyebrow">非遗数字娱乐创作平台</span>
+          <span class="eyebrow">Trae AI 创造力大赛 · 生活娱乐赛道</span>
+          <span class="sub-eyebrow">非遗创新创意副赛道</span>
           <h1>遗境千年</h1>
           <p class="hero-lead">从古代夜市的百艺娱乐，到现代手机里的创作社区。用户在多分支剧情中体验非遗流程与文化内涵，收集结局与信物，再解锁可复玩的造景、行仪、影戏、剪纸与经营玩法。</p>
           <div class="hero-actions" aria-label="快速跳转">
             <a class="btn primary" href="#concept">查看创意主线</a>
-            <a class="btn" href="#tech">技术组合 A + B + 轻量 C</a>
+            <a class="btn" href="#roadmap">查看阶段计划</a>
           </div>
         </div>
 
@@ -1099,7 +1852,7 @@
       <section id="concept" aria-labelledby="concept-title">
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="concept-title">项目定位</h2>
+            <h2 id="concept-title"><span>项目：</span><span>定位</span></h2>
             <p>《遗境千年》不是非遗百科，也不是单纯展览，而是一个面向大众的生活娱乐型非遗数字体验产品。</p>
           </div>
 
@@ -1107,10 +1860,6 @@
             <article class="card wide reveal" data-index="01">
               <h3>核心一句话</h3>
               <p>用户打开手机，进入一张古今共屏的数字长卷；在五类非遗中体验分支剧情、做出选择、收集结局，再解锁深度玩法，把非遗转化为自己的作品并发布到万象集。</p>
-            </article>
-            <article class="card slim reveal" data-index="02">
-              <h3>赛道判断</h3>
-              <p>偏生活娱乐：可看、可玩、可创作、可收藏、可分享、可复玩。文化内容通过剧情、工具、流程和作品沉淀自然进入体验。</p>
             </article>
             <article class="card full reveal" data-index="03">
               <h3>体验闭环</h3>
@@ -1136,8 +1885,7 @@
       <section id="opening" aria-labelledby="opening-title">
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="opening-title">开场：百艺入屏</h2>
-            <p>开场不批判现代生活，而是用古今转场说明：非遗从古代生活娱乐一路流转到现代手机娱乐。</p>
+            <h2 id="opening-title"><span>开场：</span><span>百艺入屏</span></h2>
           </div>
           <div class="panel mechanic reveal">
             <div>
@@ -1158,12 +1906,12 @@
       <section id="home" aria-labelledby="home-title">
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="home-title">首页：古今共屏</h2>
-            <p>首页是一张可横向轻滑的古今长卷：左侧承接古代百艺氛围，右侧呈现现代平台功能，五艺入口悬浮在过渡区域。</p>
+            <h2 id="home-title"><span>首页：</span><span>古今共屏</span></h2>
           </div>
         </div>
 
         <div class="wrap panel timeline-panel reveal" aria-label="古今共屏首页示意">
+          <canvas class="home-lightstream" aria-hidden="true"></canvas>
           <div class="ancient">
             <h3>左承千年百艺</h3>
             <p>灯笼、古街、火星、影幕、傩面纹、剪纸纹、糖线与人群剪影，形成古代生活娱乐的气息。</p>
@@ -1173,11 +1921,11 @@
           </div>
 
           <nav class="bridge" aria-label="五艺入口">
-            <a href="#arts">岁时民俗<span>打铁花</span></a>
-            <a href="#arts">民俗仪式<span>傩戏傩舞</span></a>
-            <a href="#arts">表演叙事<span>皮影戏</span></a>
-            <a href="#arts">民间美术<span>剪纸</span></a>
-            <a href="#arts">饮食游艺<span>糖画</span></a>
+            <a href="#arts" aria-label="岁时民俗：打铁花，火树银花" data-label="打铁花 · 火树银花">岁时民俗<span>打铁花</span></a>
+            <a href="#arts" aria-label="民俗仪式：傩戏傩舞，傩面行仪" data-label="傩戏傩舞 · 傩面行仪">民俗仪式<span>傩戏傩舞</span></a>
+            <a href="#arts" aria-label="表演叙事：皮影戏，一幕生影" data-label="皮影戏 · 一幕生影">表演叙事<span>皮影戏</span></a>
+            <a href="#arts" aria-label="民间美术：剪纸，一物成剪" data-label="剪纸 · 一物成剪">民间美术<span>剪纸</span></a>
+            <a href="#arts" aria-label="饮食游艺：糖画，糖摊小铺" data-label="糖画 · 糖摊小铺">饮食游艺<span>糖画</span></a>
           </nav>
 
           <div class="modern">
@@ -1187,7 +1935,7 @@
             </div>
             <div class="screen-card">
               <strong>今日推荐</strong>
-              <p>饮食游艺 · 糖摊小铺<br />节日订单：制作“元宵灯兔”。</p>
+              <p class="recommend-text">饮食游艺 · 糖摊小铺<br />节日订单：制作“元宵灯兔”。</p>
             </div>
           </div>
         </div>
@@ -1196,8 +1944,7 @@
       <section id="story" aria-labelledby="story-title">
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="story-title">主玩法：多分支剧情体验</h2>
-            <p>点击任意非遗后，用户先进入剧情篇章。剧情选项影响后续节点、文化碎片、体验方式、信物属性、深度玩法素材与最终结局。</p>
+            <h2 id="story-title"><span>主玩法：</span><span>多分支剧情体验</span></h2>
           </div>
 
           <div class="panel mechanic reveal">
@@ -1218,33 +1965,13 @@
               <div class="node"><strong>深度玩法</strong> 信物解锁铁花造景、一物成剪等复玩系统。</div>
             </div>
           </div>
-
-          <div class="feature-list" style="margin-top: var(--space-2);">
-            <article class="mini reveal">
-              <h3>剧情变量</h3>
-              <p>技艺理解、情感倾向、传承倾向、创新倾向共同影响结局。</p>
-            </article>
-            <article class="mini reveal">
-              <h3>条件选项</h3>
-              <p>二周目、已解锁文化碎片、已获得信物或特定作品会触发隐藏分支。</p>
-            </article>
-            <article class="mini reveal">
-              <h3>文化绑定</h3>
-              <p>选项对应工具、技法、寓意、人物关系或传承表达，避免无意义选择。</p>
-            </article>
-            <article class="mini reveal">
-              <h3>节点回溯</h3>
-              <p>用户可从关键节点重开，收集不同结局，不必反复看完整开场。</p>
-            </article>
-          </div>
         </div>
       </section>
 
       <section id="arts" aria-labelledby="arts-title">
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="arts-title">五艺与深度玩法</h2>
-            <p>五个入口对应五个大类。剧情篇章负责文化与结局，深度玩法负责复玩、创作、经营与社区传播。</p>
+            <h2 id="arts-title"><span>五艺：</span><span>深度玩法</span></h2>
           </div>
 
           <div class="arts-grid" aria-label="五个非遗玩法卡片">
@@ -1294,12 +2021,11 @@
       <section id="community" aria-labelledby="community-title">
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="community-title">图鉴与万象集</h2>
-            <p>图鉴是私人收藏，万象集是公共分享。作品默认进入个人图鉴，用户选择发布后，经审核进入万象集。</p>
+            <h2 id="community-title"><span>图鉴：</span><span>万象集</span></h2>
           </div>
 
           <div class="cards">
-            <article class="card slim reveal" data-index="私">
+            <article class="card reveal" data-index="私">
               <h3>我的图鉴</h3>
               <ul>
                 <li>结局图鉴：记录每个非遗剧情的不同结局。</li>
@@ -1307,7 +2033,7 @@
                 <li>作品集：铁花谱、傩面符、影戏集、剪纸册、糖画谱。</li>
               </ul>
             </article>
-            <article class="card wide reveal" data-index="公">
+            <article class="card reveal" data-index="公">
               <h3>万象集</h3>
               <p>全局作品分享平台，支持打铁花、剪纸、皮影、傩面符、糖画与后续陶瓷、刺绣等分类。发布时作者可选择是否允许他人一键模仿；若允许，再创作作品自动标注灵感来源。</p>
               <div class="tag-row"><span class="tag">分类浏览</span><span class="tag">审核发布</span><span
@@ -1317,70 +2043,24 @@
         </div>
       </section>
 
-      <section id="tech" aria-labelledby="tech-title">
-        <div class="wrap">
-          <div class="section-head reveal">
-            <h2 id="tech-title">技术组合：A + B + 轻量 C</h2>
-            <p>本提案页选择 A、B、轻量 C 的组合：用 CSS 构建响应式视觉系统，用原生滚动观察实现序列动画，用 Canvas 粒子营造火星与数字光流。</p>
-          </div>
-
-          <div class="tech-grid">
-            <div class="panel mechanic reveal">
-              <div>
-                <h3>最终用户体验</h3>
-                <p>用户滚动页面时，内容以交错节奏进入视野；背景火星粒子持续漂浮，并随指针产生轻微引力；首页“古今共屏”以非对称布局展现古代百艺与现代平台的自然融合。</p>
-              </div>
-              <div class="tech-list">
-                <div class="tech-item"><span class="check">A</span>
-                  <div><strong>现代 CSS 视觉系统</strong><br />变量、clamp、Grid、Flex、伪元素、混合模式、响应式令牌。</div>
-                </div>
-                <div class="tech-item"><span class="check">B</span>
-                  <div><strong>高级动效叙事</strong><br />不依赖 UI 框架，使用 Intersection Observer 实现 Stagger 入场；以原生滚动与 CSS
-                    过渡模拟滚动叙事。</div>
-                </div>
-                <div class="tech-item"><span class="check">C</span>
-                  <div><strong>轻量粒子世界</strong><br />原生 Canvas 粒子系统模拟火星、糖线与数字光点，避免引入大型 3D 库造成性能负担。</div>
-                </div>
-              </div>
-            </div>
-
-            <aside class="card full reveal" data-index="约">
-              <h3>代码约束落实</h3>
-              <ul>
-                <li>零外部 UI 依赖：未引入 Bootstrap、Tailwind、Ant Design 等框架。</li>
-                <li>语义化结构：使用 header、nav、main、section、article、footer。</li>
-                <li>可访问性：提供跳转正文链接、ARIA 标签、导航语义。</li>
-                <li>性能降级：使用 prefers-reduced-motion 关闭粒子与动效。</li>
-                <li>渐进增强：即使禁用动画，内容仍完整可读。</li>
-              </ul>
-            </aside>
-          </div>
-        </div>
-      </section>
-
       <section id="roadmap" aria-labelledby="roadmap-title">
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="roadmap-title">开发计划</h2>
-            <p>第一版目标是做出能够清楚展示主线、视觉和核心玩法的高质量 Demo，而不是一次性实现完整商业社区。</p>
+            <h2 id="roadmap-title"><span>计划：</span><span>阶段完成度</span></h2>
           </div>
 
           <div class="roadmap">
             <article class="mini reveal">
-              <h3>阶段一：提案与内容</h3>
-              <p>重写新版提案、整理五艺资料、确定每个非遗第一版剧情主题和结局数量。</p>
+              <h3>报名阶段</h3>
+              <p>完成项目定位、赛道表达、五艺主题、核心玩法与提案页视觉方向，形成可提交的创意方案。</p>
             </article>
             <article class="mini reveal">
-              <h3>阶段二：视觉原型</h3>
-              <p>制作“百艺入屏”分镜、古今共屏首页、五艺入口、图鉴与万象集核心页面。</p>
+              <h3>初赛阶段</h3>
+              <p>完成百艺入屏开场、古今共屏首页与核心剧情玩法，打通剧情选择、结局收集和节点回溯的演示链路。</p>
             </article>
             <article class="mini reveal">
-              <h3>阶段三：玩法 Demo</h3>
-              <p>优先实现打铁花参数化造景、剪纸一物成剪原型、皮影工坊简化演出。</p>
-            </article>
-            <article class="mini reveal">
-              <h3>阶段四：答辩展示</h3>
-              <p>准备演示路线、技术架构、文化价值、创新价值、风险与版权审核说明。</p>
+              <h3>复赛阶段</h3>
+              <p>补齐打铁花造景、傩面行仪、影戏工坊、剪纸创作、糖摊经营、图鉴与万象集等后续玩法。</p>
             </article>
           </div>
         </div>
@@ -1399,10 +2079,24 @@
 
   <script>
     (() => {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const revealItems = [...document.querySelectorAll('.reveal')];
-      if (!prefersReduced && 'IntersectionObserver' in window) {
+      const navLinks = [...document.querySelectorAll('.nav-links a')];
+      const sections = [...document.querySelectorAll('main > section')];
+      const progress = document.querySelector('.read-progress span');
+      const homeSection = document.querySelector('#home');
+      const homePanel = document.querySelector('.timeline-panel');
+      const lightCanvas = document.querySelector('.home-lightstream');
+      const recommendText = document.querySelector('.recommend-text');
+      const bridgeLinks = [...document.querySelectorAll('.bridge a')];
+      const hero = document.querySelector('.hero');
+      const phone = document.querySelector('.phone');
+      const heroTitle = document.querySelector('.app-title');
+      const heroSubtitle = document.querySelector('.app-subtitle');
+      let homeActive = false;
+      let rafId = 0;
+
+      if (!reducedMotion && 'IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -1419,84 +2113,167 @@
         revealItems.forEach((item) => item.classList.add('is-visible'));
       }
 
-      if (prefersReduced) return;
+      const sectionObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          navLinks.forEach((link) => {
+            link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
+          });
+        });
+      }, { threshold: 0.42 }) : null;
+      sectionObserver && sections.forEach((section) => sectionObserver.observe(section));
 
-      const canvas = document.getElementById('particle-canvas');
-      const ctx = canvas.getContext('2d');
-      const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false };
+      const homeObserver = 'IntersectionObserver' in window && homeSection ? new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          homeActive = entry.isIntersecting;
+          homePanel && homePanel.classList.toggle('home-in-view', homeActive);
+          if (homeActive && !rafId && !reducedMotion) drawLightstream();
+        });
+      }, { threshold: 0.22 }) : null;
+      homeObserver && homeObserver.observe(homeSection);
+
+      function updateScrollState() {
+        const doc = document.documentElement;
+        const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+        const ratio = doc.scrollTop / max;
+        progress && progress.style.setProperty('--read-progress', `${ratio * 100}%`);
+
+        if (homePanel && homeActive) {
+          const rect = homePanel.getBoundingClientRect();
+          const mid = (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight;
+          homePanel.style.setProperty('--home-left-shift', `${mid * -10}px`);
+          homePanel.style.setProperty('--home-right-shift', `${mid * -16}px`);
+        }
+      }
+
+      window.addEventListener('scroll', updateScrollState, { passive: true });
+      updateScrollState();
+
+      if (!reducedMotion && hero && phone) {
+        hero.addEventListener('pointermove', (event) => {
+          const rect = hero.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width - .5) * 16;
+          const y = ((event.clientY - rect.top) / rect.height - .5) * -16;
+          phone.style.transform = `rotate(${x * .12}deg) rotateY(${x}deg) rotateX(${y}deg)`;
+        }, { passive: true });
+        hero.addEventListener('pointerleave', () => {
+          phone.style.transform = '';
+        }, { passive: true });
+      }
+
+      bridgeLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          link.classList.remove('is-rippling');
+          void link.offsetWidth;
+          link.classList.add('is-rippling');
+          window.setTimeout(() => link.classList.remove('is-rippling'), 260);
+        });
+      });
+
+      if (!reducedMotion && recommendText) {
+        const items = [
+          '饮食游艺 · 糖摊小铺<br />节日订单：制作“元宵灯兔”。',
+          '岁时民俗 · 铁花造景<br />生成一次“火树银花”。',
+          '表演叙事 · 影戏工坊<br />编排一幕古街夜戏。'
+        ];
+        let current = 0;
+        window.setInterval(() => {
+          current = (current + 1) % items.length;
+          recommendText.style.opacity = '0';
+          window.setTimeout(() => {
+            recommendText.innerHTML = items[current];
+            recommendText.style.opacity = '1';
+          }, 220);
+        }, 6200);
+      }
+
+      if (heroTitle && heroSubtitle && !reducedMotion) {
+        heroTitle.classList.add('title-letters');
+        heroTitle.innerHTML = [...heroTitle.textContent.trim()].map((char, index) => `<span style="--i:${index}">${char}</span>`).join('');
+        heroSubtitle.classList.add('typewriter');
+      }
+
+      if (reducedMotion || !lightCanvas || !homePanel) return;
+
+      const ctx = lightCanvas.getContext('2d');
+      const pointer = { x: 0, y: 0, active: false };
       let particles = [];
-      let width = 0;
-      let height = 0;
-      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+      let w = 0;
+      let h = 0;
+      let dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      let last = 0;
 
-      function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = Math.floor(width * dpr);
-        canvas.height = Math.floor(height * dpr);
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
+      function resizeLightstream() {
+        const rect = homePanel.getBoundingClientRect();
+        w = Math.max(1, rect.width);
+        h = Math.max(1, rect.height);
+        lightCanvas.width = Math.floor(w * dpr);
+        lightCanvas.height = Math.floor(h * dpr);
+        lightCanvas.style.width = `${w}px`;
+        lightCanvas.style.height = `${h}px`;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const count = Math.min(130, Math.floor(width * height / 12000));
-        particles = Array.from({ length: count }, () => createParticle(true));
+        particles = Array.from({ length: 56 }, (_, index) => ({
+          t: index / 56,
+          speed: .00008 + Math.random() * .00008,
+          offset: Math.random() * Math.PI * 2,
+          size: .8 + Math.random() * 1.6,
+          alpha: .32 + Math.random() * .34
+        }));
       }
 
-      function createParticle(randomY = false) {
-        const warm = Math.random() > .32;
-        return {
-          x: Math.random() * width,
-          y: randomY ? Math.random() * height : height + 20,
-          vx: (Math.random() - .5) * .35,
-          vy: -(.18 + Math.random() * .55),
-          r: .8 + Math.random() * 2.3,
-          alpha: .18 + Math.random() * .5,
-          hue: warm ? 38 + Math.random() * 22 : 160 + Math.random() * 40
-        };
+      function curvePoint(t, wave = 0) {
+        const x = w * (.08 + t * .84);
+        const y = h * (.50 + Math.sin(t * Math.PI * 2 + wave) * .08);
+        return { x, y };
       }
 
-      function draw() {
-        ctx.clearRect(0, 0, width, height);
+      function drawLightstream(time = 0) {
+        rafId = requestAnimationFrame(drawLightstream);
+        if (!homeActive) {
+          cancelAnimationFrame(rafId);
+          rafId = 0;
+          return;
+        }
+        if (time - last < 32) return;
+        last = time;
+        ctx.clearRect(0, 0, w, h);
         ctx.globalCompositeOperation = 'lighter';
-        for (const p of particles) {
+        particles.forEach((p) => {
+          p.t = (p.t + p.speed * (pointer.active ? 1.28 : 1)) % 1;
+          const point = curvePoint(p.t, time * .0006 + p.offset);
+          let x = point.x;
+          let y = point.y;
           if (pointer.active) {
-            const dx = pointer.x - p.x;
-            const dy = pointer.y - p.y;
+            const dx = pointer.x - x;
+            const dy = pointer.y - y;
             const dist = Math.hypot(dx, dy) || 1;
-            if (dist < 180) {
-              const force = (180 - dist) / 180;
-              p.vx += (dx / dist) * force * .012;
-              p.vy += (dy / dist) * force * .006;
+            if (dist < 150) {
+              const force = (150 - dist) / 150;
+              x += dx / dist * force * 16;
+              y += dy / dist * force * 10;
             }
           }
-
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vx *= .992;
-          p.vy *= .998;
-
-          if (p.y < -30 || p.x < -40 || p.x > width + 40) Object.assign(p, createParticle(false));
-
-          const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
-          gradient.addColorStop(0, `hsla(${p.hue}, 90%, 70%, ${p.alpha})`);
-          gradient.addColorStop(1, `hsla(${p.hue}, 90%, 55%, 0)`);
-          ctx.fillStyle = gradient;
+          const warm = 38 + p.t * 18;
+          const cool = 205 - p.t * 42;
+          const hue = p.t < .55 ? warm : cool;
+          ctx.fillStyle = `hsla(${hue}, 82%, 72%, ${p.alpha})`;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+          ctx.arc(x, y, p.size, 0, Math.PI * 2);
           ctx.fill();
-        }
-        requestAnimationFrame(draw);
+        });
       }
 
-      window.addEventListener('resize', resize, { passive: true });
-      window.addEventListener('pointermove', (event) => {
-        pointer.x = event.clientX;
-        pointer.y = event.clientY;
+      homePanel.addEventListener('pointermove', (event) => {
+        const rect = homePanel.getBoundingClientRect();
+        pointer.x = event.clientX - rect.left;
+        pointer.y = event.clientY - rect.top;
         pointer.active = true;
       }, { passive: true });
-      window.addEventListener('pointerleave', () => { pointer.active = false; }, { passive: true });
-
-      resize();
-      draw();
+      homePanel.addEventListener('pointerleave', () => { pointer.active = false; }, { passive: true });
+      window.addEventListener('resize', resizeLightstream, { passive: true });
+      resizeLightstream();
+      if (homeActive) drawLightstream();
     })();
   </script>
 </body>
