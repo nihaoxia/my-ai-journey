@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="《遗境千年》非遗数字娱乐创作平台创意提案" />
+  <title>遗境千年｜非遗数字娱乐创作平台创意提案</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #251d19;
+      --muted: #766657;
+      --paper: #f5ead2;
+      --paper-soft: #fff7e7;
+      --paper-deep: #e6cf9d;
+      --night: #141719;
+      --night-blue: #172933;
+      --jade: #37695b;
+      --jade-soft: #8ab09b;
+      --gold: #c89b45;
+      --gold-light: #f2d98e;
+      --red: #9f2d25;
+      --cinnabar: #6e1715;
+      --shadow: rgba(31, 21, 15, 0.22);
+      --glass: rgba(255, 248, 226, 0.72);
+      --line: rgba(93, 66, 42, 0.18);
+      --radius-xl: clamp(24px, 4vw, 46px);
+      --radius-lg: clamp(18px, 2.5vw, 30px);
+      --radius-md: 18px;
+      --space-1: clamp(8px, 1vw, 12px);
+      --space-2: clamp(14px, 1.6vw, 22px);
+      --space-3: clamp(22px, 3vw, 42px);
+      --space-4: clamp(36px, 6vw, 86px);
+      --space-5: clamp(58px, 9vw, 128px);
+      --title: clamp(3.2rem, 10vw, 8.8rem);
+      --h1: clamp(2.4rem, 6vw, 5.6rem);
+      --h2: clamp(1.9rem, 3.4vw, 3.4rem);
+      --h3: clamp(1.2rem, 1.7vw, 1.7rem);
+      --body: clamp(1rem, 1.05vw, 1.12rem);
+      --small: clamp(.82rem, .9vw, .96rem);
+      --max: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Noto Serif SC", "Songti SC", "SimSun", "Microsoft YaHei", serif;
+      font-size: var(--body);
+      line-height: 1.85;
+      background:
+        radial-gradient(circle at 12% 6%, rgba(242, 217, 142, .32), transparent 28%),
+        radial-gradient(circle at 86% 10%, rgba(55, 105, 91, .22), transparent 24%),
+        linear-gradient(135deg, #f6ecd4 0%, #ead4a5 44%, #d9bf86 100%);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    body::before {
+      opacity: .22;
+      background-image:
+        linear-gradient(90deg, rgba(50, 35, 22, .06) 1px, transparent 1px),
+        linear-gradient(rgba(50, 35, 22, .045) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mix-blend-mode: multiply;
+    }
+
+    body::after {
+      opacity: .18;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, .8), transparent 9%),
+        repeating-linear-gradient(115deg, rgba(80, 45, 20, .09) 0 1px, transparent 1px 7px);
+      mix-blend-mode: overlay;
+    }
+
+    canvas#particle-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .85;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 20;
+      transform: translateY(-140%);
+      padding: .7rem 1rem;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--cinnabar);
+      transition: transform .24s ease;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+    }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin-inline: auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(90deg, rgba(245, 234, 210, .76), rgba(255, 248, 226, .58));
+      border-bottom: 1px solid rgba(80, 54, 30, .13);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 68px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      color: #fff4dc;
+      background: linear-gradient(135deg, var(--cinnabar), #ad4a2c 55%, var(--gold));
+      box-shadow: 0 12px 28px rgba(110, 23, 21, .22);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: clamp(.55rem, 1.6vw, 1.4rem);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-size: var(--small);
+      color: #4f3d30;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: .35rem .2rem;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--cinnabar);
+      border-bottom-color: currentColor;
+      outline: none;
+    }
+
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 68px);
+      display: grid;
+      align-items: center;
+      padding: var(--space-4) 0 var(--space-5);
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 4% -6% auto;
+      height: 72%;
+      border-radius: 0 0 55% 55%;
+      background:
+        radial-gradient(circle at 18% 50%, rgba(192, 48, 35, .20), transparent 22%),
+        radial-gradient(circle at 82% 42%, rgba(21, 39, 45, .30), transparent 27%),
+        linear-gradient(90deg, rgba(118, 57, 25, .16), transparent 46%, rgba(30, 53, 60, .16));
+      filter: blur(2px);
+      z-index: -1;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .88fr) minmax(280px, 1.12fr);
+      gap: clamp(28px, 5vw, 84px);
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      margin-bottom: var(--space-2);
+      color: var(--cinnabar);
+      font-size: var(--small);
+      font-weight: 700;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: var(--space-2);
+      font-family: "STKaiti", "KaiTi", "FangSong", serif;
+      font-size: var(--title);
+      line-height: .98;
+      font-weight: 400;
+      letter-spacing: .18em;
+      color: #321b16;
+      text-shadow: 0 18px 42px rgba(72, 34, 20, .16);
+    }
+
+    .hero-lead {
+      max-width: 690px;
+      margin-bottom: var(--space-3);
+      color: #4d3b30;
+      font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      min-height: 48px;
+      padding: .75rem 1.25rem;
+      border: 1px solid rgba(74, 44, 24, .22);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      background: rgba(255, 248, 226, .7);
+      box-shadow: 0 12px 30px rgba(57, 38, 22, .10);
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+    .btn.primary {
+      color: #fff7e6;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--cinnabar), #b34a2b 55%, #d0a244);
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 38px rgba(57, 38, 22, .18);
+      outline: none;
+    }
+
+    .phone-stage {
+      position: relative;
+      min-height: 640px;
+      display: grid;
+      place-items: center;
+      perspective: 1200px;
+    }
+
+    .phone-stage::before,
+    .phone-stage::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(1px);
+      opacity: .72;
+    }
+
+    .phone-stage::before {
+      width: 74%;
+      height: 74%;
+      background: radial-gradient(circle, rgba(199, 155, 70, .24), transparent 68%);
+    }
+
+    .phone-stage::after {
+      width: 56%;
+      height: 56%;
+      border: 1px solid rgba(108, 62, 30, .22);
+      transform: rotate(-18deg);
+    }
+
+    .phone {
+      position: relative;
+      width: min(330px, 82vw);
+      aspect-ratio: 9 / 18;
+      padding: 15px;
+      border-radius: 42px;
+      background: linear-gradient(145deg, #1a1a1d, #35444a 52%, #0d0f10);
+      box-shadow: 0 38px 90px rgba(19, 16, 12, .34), inset 0 0 0 2px rgba(255, 255, 255, .08);
+      transform: rotateY(-10deg) rotateX(5deg) rotateZ(2deg);
+      z-index: 2;
+    }
+
+    .phone-screen {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 30px;
+      color: #fff8e7;
+      background:
+        radial-gradient(circle at 30% 18%, rgba(236, 175, 65, .52), transparent 22%),
+        radial-gradient(circle at 74% 82%, rgba(68, 145, 126, .42), transparent 24%),
+        linear-gradient(155deg, #29120f 0%, #17343a 58%, #081012 100%);
+    }
+
+    .phone-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .28;
+      background:
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, .10) 0 1px, transparent 1px 9px),
+        radial-gradient(circle at 50% 0, rgba(255, 255, 255, .25), transparent 26%);
+      mix-blend-mode: overlay;
+    }
+
+    .phone-content {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px 22px 24px;
+    }
+
+    .phone-top {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255, 248, 231, .78);
+      font-size: .78rem;
+      letter-spacing: .08em;
+    }
+
+    .app-title {
+      margin-top: 38px;
+      font-family: "STKaiti", "KaiTi", serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      letter-spacing: .18em;
+    }
+
+    .app-subtitle {
+      color: rgba(255, 248, 231, .72);
+      font-size: .88rem;
+    }
+
+    .app-card {
+      padding: 16px;
+      border: 1px solid rgba(242, 217, 142, .32);
+      border-radius: 20px;
+      background: rgba(255, 248, 231, .12);
+      backdrop-filter: blur(10px);
+    }
+
+    .app-card strong {
+      display: block;
+      margin-bottom: .25rem;
+      color: var(--gold-light);
+      letter-spacing: .08em;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .app-dot {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: #fff4d8;
+      font-size: .7rem;
+      background: rgba(255, 255, 255, .11);
+      border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .floating-token {
+      position: absolute;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      width: clamp(64px, 7vw, 92px);
+      aspect-ratio: 1;
+      border-radius: 28px;
+      color: #fff8e7;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(112, 27, 20, .88), rgba(204, 151, 58, .82));
+      box-shadow: 0 18px 38px rgba(64, 34, 18, .22);
+      animation: float 7s ease-in-out infinite;
+    }
+
+    .token-1 {
+      top: 12%;
+      left: 4%;
+    }
+
+    .token-2 {
+      top: 25%;
+      right: 0;
+      animation-delay: -1.2s;
+    }
+
+    .token-3 {
+      bottom: 22%;
+      left: 1%;
+      animation-delay: -2.1s;
+    }
+
+    .token-4 {
+      bottom: 10%;
+      right: 8%;
+      animation-delay: -3.2s;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) rotate(-4deg);
+      }
+
+      50% {
+        transform: translate3d(0, -18px, 0) rotate(5deg);
+      }
+    }
+
+    section {
+      padding: var(--space-5) 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, .72fr) minmax(260px, .58fr);
+      gap: var(--space-3);
+      align-items: end;
+      margin-bottom: var(--space-3);
+    }
+
+    .section-head h2 {
+      margin-bottom: 0;
+      font-size: var(--h1);
+      line-height: 1.08;
+      font-weight: 500;
+      letter-spacing: .08em;
+    }
+
+    .section-head p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .panel {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(72, 46, 28, .14);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(255, 248, 226, .78), rgba(245, 234, 210, .56));
+      box-shadow: 0 24px 70px rgba(55, 36, 20, .12);
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .28;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(200, 155, 69, .32), transparent 22%),
+        radial-gradient(circle at 88% 80%, rgba(55, 105, 91, .22), transparent 24%);
+      pointer-events: none;
+    }
+
+    .timeline-panel {
+      display: grid;
+      grid-template-columns: minmax(280px, .95fr) minmax(280px, 1.05fr);
+      min-height: 680px;
+    }
+
+    .ancient,
+    .modern {
+      position: relative;
+      padding: clamp(28px, 5vw, 70px);
+    }
+
+    .ancient {
+      color: #fff4dd;
+      background:
+        radial-gradient(circle at 25% 28%, rgba(224, 130, 47, .34), transparent 20%),
+        linear-gradient(140deg, #431713, #7a3420 46%, #bd7e31);
+    }
+
+    .modern {
+      color: #f8edda;
+      background:
+        radial-gradient(circle at 70% 16%, rgba(78, 166, 147, .24), transparent 24%),
+        linear-gradient(145deg, #102024, #203e45 52%, #0d1418);
+    }
+
+    .ancient::after,
+    .modern::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--x, 50%) 50%, rgba(255, 255, 255, .26), transparent 18%);
+      mix-blend-mode: screen;
+      opacity: .42;
+      pointer-events: none;
+    }
+
+    .bridge {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(480px, 64vw);
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: clamp(8px, 1vw, 14px);
+      padding: 14px;
+      border-radius: 999px;
+      background: rgba(255, 248, 231, .18);
+      border: 1px solid rgba(255, 248, 231, .28);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .22);
+    }
+
+    .bridge a {
+      min-height: 78px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 999px;
+      color: #fff8e7;
+      font-size: var(--small);
+      background: rgba(255, 255, 255, .13);
+      transition: transform .25s ease, background .25s ease;
+    }
+
+    .bridge a:hover,
+    .bridge a:focus-visible {
+      transform: translateY(-5px) scale(1.03);
+      background: rgba(242, 217, 142, .28);
+      outline: none;
+    }
+
+    .bridge span {
+      display: block;
+      font-size: .72em;
+      opacity: .76;
+      letter-spacing: 0;
+    }
+
+    .screen-card {
+      position: relative;
+      z-index: 1;
+      max-width: 380px;
+      margin-left: auto;
+      padding: clamp(20px, 3vw, 34px);
+      border: 1px solid rgba(242, 217, 142, .28);
+      border-radius: 28px;
+      background: rgba(255, 248, 231, .12);
+      backdrop-filter: blur(16px);
+    }
+
+    .screen-card+.screen-card {
+      margin-top: 18px;
+      margin-left: 0;
+    }
+
+    .ancient h3,
+    .modern h3 {
+      font-size: var(--h2);
+      line-height: 1.1;
+      font-weight: 400;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+      margin-top: var(--space-2);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .35rem .65rem;
+      border-radius: 999px;
+      color: #5a3e28;
+      font-size: .82rem;
+      background: rgba(255, 248, 226, .72);
+      border: 1px solid rgba(95, 64, 33, .12);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--space-2);
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      min-height: 280px;
+      padding: clamp(22px, 3vw, 36px);
+      border: 1px solid rgba(71, 45, 27, .13);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(145deg, rgba(255, 248, 226, .86), rgba(235, 213, 166, .62));
+      box-shadow: 0 22px 56px rgba(66, 43, 24, .10);
+    }
+
+    .card::before {
+      content: attr(data-index);
+      position: absolute;
+      right: 22px;
+      top: 12px;
+      color: rgba(104, 58, 31, .12);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+
+    .card.wide {
+      grid-column: span 7;
+    }
+
+    .card.slim {
+      grid-column: span 5;
+    }
+
+    .card.full {
+      grid-column: span 12;
+    }
+
+    .card h3 {
+      position: relative;
+      margin-bottom: .5rem;
+      font-size: var(--h3);
+      letter-spacing: .08em;
+    }
+
+    .card p,
+    .card li {
+      color: #5f4b3d;
+    }
+
+    .card ul {
+      margin: 1rem 0 0;
+      padding-left: 1.2rem;
+    }
+
+    .flow {
+      display: grid;
+      gap: 1rem;
+      counter-reset: flow;
+    }
+
+    .flow-step {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      align-items: start;
+      padding: 1rem;
+      border-radius: 22px;
+      background: rgba(255, 248, 226, .68);
+      border: 1px solid rgba(80, 52, 30, .12);
+    }
+
+    .flow-step::before {
+      counter-increment: flow;
+      content: counter(flow);
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: #fff4dc;
+      background: linear-gradient(135deg, var(--cinnabar), var(--gold));
+      font-weight: 700;
+    }
+
+    .arts-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .art-card {
+      position: relative;
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+      overflow: hidden;
+      border-radius: 30px;
+      color: #fff8e7;
+      background: linear-gradient(155deg, #39201a, #7f3424 48%, #c18b36);
+      box-shadow: 0 26px 60px rgba(62, 36, 22, .18);
+    }
+
+    .art-card:nth-child(2) {
+      background: linear-gradient(155deg, #1e2422, #463023 44%, #8e2d24);
+    }
+
+    .art-card:nth-child(3) {
+      background: linear-gradient(155deg, #171514, #2e3540 52%, #8c6b35);
+    }
+
+    .art-card:nth-child(4) {
+      background: linear-gradient(155deg, #7b1916, #b83328 48%, #e4bb73);
+    }
+
+    .art-card:nth-child(5) {
+      background: linear-gradient(155deg, #58351f, #be7e2d 48%, #f0cf75);
+    }
+
+    .art-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -24% -16% auto;
+      width: 180px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .12);
+      filter: blur(1px);
+    }
+
+    .art-icon {
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      margin-bottom: auto;
+      border-radius: 26px;
+      font-size: 2rem;
+      background: rgba(255, 248, 231, .14);
+      border: 1px solid rgba(255, 255, 255, .16);
+    }
+
+    .art-card h3 {
+      margin: 2rem 0 .4rem;
+      font-size: 1.35rem;
+    }
+
+    .art-card p {
+      color: rgba(255, 248, 231, .76);
+      font-size: .94rem;
+    }
+
+    .mechanic {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: var(--space-3);
+      align-items: center;
+      padding: clamp(26px, 5vw, 58px);
+    }
+
+    .branch-map {
+      display: grid;
+      gap: 14px;
+    }
+
+    .node {
+      position: relative;
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .42);
+      border: 1px solid rgba(85, 57, 33, .13);
+      box-shadow: 0 14px 28px rgba(62, 42, 22, .08);
+    }
+
+    .node:nth-child(even) {
+      margin-left: 12%;
+    }
+
+    .node strong {
+      color: var(--cinnabar);
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .mini {
+      padding: 20px;
+      border-radius: 24px;
+      background: rgba(255, 248, 226, .7);
+      border: 1px solid rgba(72, 46, 28, .12);
+    }
+
+    .mini h3 {
+      margin-bottom: .35rem;
+      color: var(--cinnabar);
+      font-size: 1.05rem;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: var(--space-2);
+    }
+
+    .tech-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .tech-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, .44);
+      border: 1px solid rgba(68, 44, 28, .11);
+    }
+
+    .check {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: #fff4dd;
+      background: var(--jade);
+      font-weight: 700;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-2);
+    }
+
+    .roadmap .mini {
+      min-height: 230px;
+    }
+
+    footer {
+      padding: var(--space-4) 0;
+      color: rgba(255, 248, 231, .78);
+      background: linear-gradient(135deg, #20100e, #12272d);
+    }
+
+    footer .wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px) scale(.985);
+      filter: blur(8px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(.2, .8, .2, 1), filter .8s ease;
+      transition-delay: var(--delay, 0ms);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    @media (max-width: 1040px) {
+
+      .hero-grid,
+      .section-head,
+      .timeline-panel,
+      .mechanic,
+      .tech-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .phone-stage {
+        min-height: 560px;
+      }
+
+      .bridge {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        grid-column: 1 / -1;
+        width: auto;
+        margin: -44px 18px 24px;
+      }
+
+      .cards,
+      .arts-grid,
+      .feature-list,
+      .roadmap {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card.wide,
+      .card.slim,
+      .card.full {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 0;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      h1 {
+        letter-spacing: .1em;
+      }
+
+      .cards,
+      .arts-grid,
+      .feature-list,
+      .roadmap {
+        grid-template-columns: 1fr;
+      }
+
+      .card.wide,
+      .card.slim,
+      .card.full {
+        grid-column: auto;
+      }
+
+      .bridge {
+        grid-template-columns: 1fr;
+        border-radius: 28px;
+      }
+
+      .bridge a {
+        min-height: 58px;
+      }
+
+      .timeline-panel {
+        min-height: auto;
+      }
+
+      footer .wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+
+      canvas#particle-canvas {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+  <div class="page">
+    <nav class="nav" aria-label="页面导航">
+      <div class="wrap nav-inner">
+        <div class="brand" aria-label="遗境千年">
+          <span class="brand-mark" aria-hidden="true">遗</span>
+          <span>遗境千年</span>
+        </div>
+        <div class="nav-links">
+          <a href="#concept">概念</a>
+          <a href="#home">首页</a>
+          <a href="#story">主玩法</a>
+          <a href="#arts">五艺</a>
+          <a href="#tech">技术</a>
+          <a href="#roadmap">计划</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div class="reveal">
+          <span class="eyebrow">非遗数字娱乐创作平台</span>
+          <h1>遗境千年</h1>
+          <p class="hero-lead">从古代夜市的百艺娱乐，到现代手机里的创作社区。用户在多分支剧情中体验非遗流程与文化内涵，收集结局与信物，再解锁可复玩的造景、行仪、影戏、剪纸与经营玩法。</p>
+          <div class="hero-actions" aria-label="快速跳转">
+            <a class="btn primary" href="#concept">查看创意主线</a>
+            <a class="btn" href="#tech">技术组合 A + B + 轻量 C</a>
+          </div>
+        </div>
+
+        <div class="phone-stage reveal" aria-label="手机入口视觉示意">
+          <span class="floating-token token-1">火艺</span>
+          <span class="floating-token token-2">傩面</span>
+          <span class="floating-token token-3">影戏</span>
+          <span class="floating-token token-4">糖画</span>
+          <div class="phone" aria-hidden="true">
+            <div class="phone-screen">
+              <div class="phone-content">
+                <div class="phone-top"><span>21:18</span><span>百艺入屏</span></div>
+                <div>
+                  <div class="app-title">遗境千年</div>
+                  <p class="app-subtitle">千年百艺，今入指尖</p>
+                </div>
+                <div class="app-card">
+                  <strong>今日推荐</strong>
+                  <span>岁时民俗 · 铁花造景<br />生成一次“火树银花”</span>
+                </div>
+                <div class="app-grid" aria-hidden="true">
+                  <span class="app-dot">俗</span>
+                  <span class="app-dot">仪</span>
+                  <span class="app-dot">影</span>
+                  <span class="app-dot">美</span>
+                  <span class="app-dot">糖</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section id="concept" aria-labelledby="concept-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="concept-title">项目定位</h2>
+            <p>《遗境千年》不是非遗百科，也不是单纯展览，而是一个面向大众的生活娱乐型非遗数字体验产品。</p>
+          </div>
+
+          <div class="cards">
+            <article class="card wide reveal" data-index="01">
+              <h3>核心一句话</h3>
+              <p>用户打开手机，进入一张古今共屏的数字长卷；在五类非遗中体验分支剧情、做出选择、收集结局，再解锁深度玩法，把非遗转化为自己的作品并发布到万象集。</p>
+            </article>
+            <article class="card slim reveal" data-index="02">
+              <h3>赛道判断</h3>
+              <p>偏生活娱乐：可看、可玩、可创作、可收藏、可分享、可复玩。文化内容通过剧情、工具、流程和作品沉淀自然进入体验。</p>
+            </article>
+            <article class="card full reveal" data-index="03">
+              <h3>体验闭环</h3>
+              <div class="flow" aria-label="产品体验闭环">
+                <div class="flow-step">
+                  <div><strong>首页五艺入口</strong><br />从古今共屏长卷进入岁时民俗、民俗仪式、表演叙事、民间美术、饮食游艺。</div>
+                </div>
+                <div class="flow-step">
+                  <div><strong>剧情分支体验</strong><br />在剧情中做选择，体验工具、流程、技艺、寓意与传承。</div>
+                </div>
+                <div class="flow-step">
+                  <div><strong>结局与信物</strong><br />不同选项导向不同结局，结局入册，信物解锁深度玩法。</div>
+                </div>
+                <div class="flow-step">
+                  <div><strong>创作与分享</strong><br />造景、行仪、影戏、剪纸、经营生成作品，收藏图鉴或发布万象集。</div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="opening" aria-labelledby="opening-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="opening-title">开场：百艺入屏</h2>
+            <p>开场不批判现代生活，而是用古今转场说明：非遗从古代生活娱乐一路流转到现代手机娱乐。</p>
+          </div>
+          <div class="panel mechanic reveal">
+            <div>
+              <span class="eyebrow">Opening Animation</span>
+              <h3>千年前，百艺入市，灯火照夜。<br />千年后，百艺入屏，指尖重生。</h3>
+              <p>动画从古代夜市开始，火艺、傩面、皮影、剪纸、糖人依次闪现，五艺元素汇成数字光流，最终定格在一部现代手机上，屏幕中出现《遗境千年》的入口。</p>
+            </div>
+            <div class="branch-map" aria-label="开场分镜">
+              <div class="node"><strong>古代夜市</strong> 灯笼、叫卖、人群、鼓点。</div>
+              <div class="node"><strong>五艺流转</strong> 火星、傩纹、影线、纸纹、糖线。</div>
+              <div class="node"><strong>数字汇流</strong> 古代百艺转化为数字光流。</div>
+              <div class="node"><strong>手机定格</strong> 遗境千年入口浮现。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="home" aria-labelledby="home-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="home-title">首页：古今共屏</h2>
+            <p>首页是一张可横向轻滑的古今长卷：左侧承接古代百艺氛围，右侧呈现现代平台功能，五艺入口悬浮在过渡区域。</p>
+          </div>
+        </div>
+
+        <div class="wrap panel timeline-panel reveal" aria-label="古今共屏首页示意">
+          <div class="ancient">
+            <h3>左承千年百艺</h3>
+            <p>灯笼、古街、火星、影幕、傩面纹、剪纸纹、糖线与人群剪影，形成古代生活娱乐的气息。</p>
+            <div class="tag-row">
+              <span class="tag">古代夜市</span><span class="tag">百艺源头</span><span class="tag">灯火入屏</span>
+            </div>
+          </div>
+
+          <nav class="bridge" aria-label="五艺入口">
+            <a href="#arts">岁时民俗<span>打铁花</span></a>
+            <a href="#arts">民俗仪式<span>傩戏傩舞</span></a>
+            <a href="#arts">表演叙事<span>皮影戏</span></a>
+            <a href="#arts">民间美术<span>剪纸</span></a>
+            <a href="#arts">饮食游艺<span>糖画</span></a>
+          </nav>
+
+          <div class="modern">
+            <div class="screen-card">
+              <h3>右接现代指尖</h3>
+              <p>今日推荐、每日任务、万象集精选、我的图鉴进度，构成现代手机里的非遗数字平台。</p>
+            </div>
+            <div class="screen-card">
+              <strong>今日推荐</strong>
+              <p>饮食游艺 · 糖摊小铺<br />节日订单：制作“元宵灯兔”。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="story" aria-labelledby="story-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="story-title">主玩法：多分支剧情体验</h2>
+            <p>点击任意非遗后，用户先进入剧情篇章。剧情选项影响后续节点、文化碎片、体验方式、信物属性、深度玩法素材与最终结局。</p>
+          </div>
+
+          <div class="panel mechanic reveal">
+            <div>
+              <span class="eyebrow">Core Gameplay</span>
+              <h3>剧情选择，不是跳过文化；而是把文化放进选择里。</h3>
+              <p>首次进入需要完整体验剧情；二次进入可跳过已看剧情，直接跳至选择节点，或从关键节点重开以收集不同结局。</p>
+              <div class="tag-row">
+                <span class="tag">多节点选择</span><span class="tag">结局收集</span><span class="tag">故事回溯</span><span
+                  class="tag">信物解锁</span>
+              </div>
+            </div>
+            <div class="branch-map">
+              <div class="node"><strong>开场节点</strong> 场景、人物、文化问题出现。</div>
+              <div class="node"><strong>选择节点</strong> 每个节点 3～5 个选项。</div>
+              <div class="node"><strong>非遗体验节点</strong> 工具、技艺、流程和寓意进入互动。</div>
+              <div class="node"><strong>结局节点</strong> 5～8 个结局进入结局图鉴。</div>
+              <div class="node"><strong>深度玩法</strong> 信物解锁铁花造景、一物成剪等复玩系统。</div>
+            </div>
+          </div>
+
+          <div class="feature-list" style="margin-top: var(--space-2);">
+            <article class="mini reveal">
+              <h3>剧情变量</h3>
+              <p>技艺理解、情感倾向、传承倾向、创新倾向共同影响结局。</p>
+            </article>
+            <article class="mini reveal">
+              <h3>条件选项</h3>
+              <p>二周目、已解锁文化碎片、已获得信物或特定作品会触发隐藏分支。</p>
+            </article>
+            <article class="mini reveal">
+              <h3>文化绑定</h3>
+              <p>选项对应工具、技法、寓意、人物关系或传承表达，避免无意义选择。</p>
+            </article>
+            <article class="mini reveal">
+              <h3>节点回溯</h3>
+              <p>用户可从关键节点重开，收集不同结局，不必反复看完整开场。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="arts" aria-labelledby="arts-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="arts-title">五艺与深度玩法</h2>
+            <p>五个入口对应五个大类。剧情篇章负责文化与结局，深度玩法负责复玩、创作、经营与社区传播。</p>
+          </div>
+
+          <div class="arts-grid" aria-label="五个非遗玩法卡片">
+            <article class="art-card reveal">
+              <div class="art-icon" aria-hidden="true">火</div>
+              <div>
+                <h3>岁时民俗 · 打铁花</h3>
+                <p>剧情后获得焰火令，解锁“铁花造景”：0-100 连续参数调节力度、角度、击打点、勺位、动作、节奏、风势等，生成火树银花、风火轮、火瀑等形态。</p>
+              </div>
+            </article>
+
+            <article class="art-card reveal">
+              <div class="art-icon" aria-hidden="true">傩</div>
+              <div>
+                <h3>民俗仪式 · 傩戏傩舞</h3>
+                <p>剧情后获得傩面符，解锁“傩面行仪”：选择今日心境、傩面、舞步、阵位与鼓点，生成数字化行仪和今日傩面符。</p>
+              </div>
+            </article>
+
+            <article class="art-card reveal">
+              <div class="art-icon" aria-hidden="true">影</div>
+              <div>
+                <h3>表演叙事 · 皮影戏</h3>
+                <p>剧情后获得影戏签，解锁“一幕生影 · 影戏工坊”：AI 编剧或手动导演，选择幕数、角色、场景、动作和台词，创作皮影作品。</p>
+              </div>
+            </article>
+
+            <article class="art-card reveal">
+              <div class="art-icon" aria-hidden="true">剪</div>
+              <div>
+                <h3>民间美术 · 剪纸</h3>
+                <p>剧情后获得剪纸灵纹，解锁“一物成剪”：拍物成剪、剪字成形、自由落剪三种模式，把生活素材转化为剪纸作品。</p>
+              </div>
+            </article>
+
+            <article class="art-card reveal">
+              <div class="art-icon" aria-hidden="true">糖</div>
+              <div>
+                <h3>饮食游艺 · 糖人糖画</h3>
+                <p>剧情后获得糖画签，解锁“糖摊小铺”：经营养成、搭配研发糖人、完成订单、升级摊位，节日解锁限定样式。</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="community" aria-labelledby="community-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="community-title">图鉴与万象集</h2>
+            <p>图鉴是私人收藏，万象集是公共分享。作品默认进入个人图鉴，用户选择发布后，经审核进入万象集。</p>
+          </div>
+
+          <div class="cards">
+            <article class="card slim reveal" data-index="私">
+              <h3>我的图鉴</h3>
+              <ul>
+                <li>结局图鉴：记录每个非遗剧情的不同结局。</li>
+                <li>信物收藏：焰火令、傩面符、影戏签、剪纸灵纹、糖画签。</li>
+                <li>作品集：铁花谱、傩面符、影戏集、剪纸册、糖画谱。</li>
+              </ul>
+            </article>
+            <article class="card wide reveal" data-index="公">
+              <h3>万象集</h3>
+              <p>全局作品分享平台，支持打铁花、剪纸、皮影、傩面符、糖画与后续陶瓷、刺绣等分类。发布时作者可选择是否允许他人一键模仿；若允许，再创作作品自动标注灵感来源。</p>
+              <div class="tag-row"><span class="tag">分类浏览</span><span class="tag">审核发布</span><span
+                  class="tag">一键模仿</span><span class="tag">每日主题</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="tech" aria-labelledby="tech-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="tech-title">技术组合：A + B + 轻量 C</h2>
+            <p>本提案页选择 A、B、轻量 C 的组合：用 CSS 构建响应式视觉系统，用原生滚动观察实现序列动画，用 Canvas 粒子营造火星与数字光流。</p>
+          </div>
+
+          <div class="tech-grid">
+            <div class="panel mechanic reveal">
+              <div>
+                <h3>最终用户体验</h3>
+                <p>用户滚动页面时，内容以交错节奏进入视野；背景火星粒子持续漂浮，并随指针产生轻微引力；首页“古今共屏”以非对称布局展现古代百艺与现代平台的自然融合。</p>
+              </div>
+              <div class="tech-list">
+                <div class="tech-item"><span class="check">A</span>
+                  <div><strong>现代 CSS 视觉系统</strong><br />变量、clamp、Grid、Flex、伪元素、混合模式、响应式令牌。</div>
+                </div>
+                <div class="tech-item"><span class="check">B</span>
+                  <div><strong>高级动效叙事</strong><br />不依赖 UI 框架，使用 Intersection Observer 实现 Stagger 入场；以原生滚动与 CSS
+                    过渡模拟滚动叙事。</div>
+                </div>
+                <div class="tech-item"><span class="check">C</span>
+                  <div><strong>轻量粒子世界</strong><br />原生 Canvas 粒子系统模拟火星、糖线与数字光点，避免引入大型 3D 库造成性能负担。</div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="card full reveal" data-index="约">
+              <h3>代码约束落实</h3>
+              <ul>
+                <li>零外部 UI 依赖：未引入 Bootstrap、Tailwind、Ant Design 等框架。</li>
+                <li>语义化结构：使用 header、nav、main、section、article、footer。</li>
+                <li>可访问性：提供跳转正文链接、ARIA 标签、导航语义。</li>
+                <li>性能降级：使用 prefers-reduced-motion 关闭粒子与动效。</li>
+                <li>渐进增强：即使禁用动画，内容仍完整可读。</li>
+              </ul>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="roadmap" aria-labelledby="roadmap-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="roadmap-title">开发计划</h2>
+            <p>第一版目标是做出能够清楚展示主线、视觉和核心玩法的高质量 Demo，而不是一次性实现完整商业社区。</p>
+          </div>
+
+          <div class="roadmap">
+            <article class="mini reveal">
+              <h3>阶段一：提案与内容</h3>
+              <p>重写新版提案、整理五艺资料、确定每个非遗第一版剧情主题和结局数量。</p>
+            </article>
+            <article class="mini reveal">
+              <h3>阶段二：视觉原型</h3>
+              <p>制作“百艺入屏”分镜、古今共屏首页、五艺入口、图鉴与万象集核心页面。</p>
+            </article>
+            <article class="mini reveal">
+              <h3>阶段三：玩法 Demo</h3>
+              <p>优先实现打铁花参数化造景、剪纸一物成剪原型、皮影工坊简化演出。</p>
+            </article>
+            <article class="mini reveal">
+              <h3>阶段四：答辩展示</h3>
+              <p>准备演示路线、技术架构、文化价值、创新价值、风险与版权审核说明。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div>
+          <strong>遗境千年</strong><br />非遗数字娱乐创作平台创意提案
+        </div>
+        <a class="btn" href="#top">回到顶部</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const revealItems = [...document.querySelectorAll('.reveal')];
+      if (!prefersReduced && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
+              const index = Math.max(0, siblings.indexOf(entry.target));
+              entry.target.style.setProperty('--delay', `${Math.min(index * 90, 360)}ms`);
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+        revealItems.forEach((item) => observer.observe(item));
+      } else {
+        revealItems.forEach((item) => item.classList.add('is-visible'));
+      }
+
+      if (prefersReduced) return;
+
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas.getContext('2d');
+      const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false };
+      let particles = [];
+      let width = 0;
+      let height = 0;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = Math.min(130, Math.floor(width * height / 12000));
+        particles = Array.from({ length: count }, () => createParticle(true));
+      }
+
+      function createParticle(randomY = false) {
+        const warm = Math.random() > .32;
+        return {
+          x: Math.random() * width,
+          y: randomY ? Math.random() * height : height + 20,
+          vx: (Math.random() - .5) * .35,
+          vy: -(.18 + Math.random() * .55),
+          r: .8 + Math.random() * 2.3,
+          alpha: .18 + Math.random() * .5,
+          hue: warm ? 38 + Math.random() * 22 : 160 + Math.random() * 40
+        };
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.globalCompositeOperation = 'lighter';
+        for (const p of particles) {
+          if (pointer.active) {
+            const dx = pointer.x - p.x;
+            const dy = pointer.y - p.y;
+            const dist = Math.hypot(dx, dy) || 1;
+            if (dist < 180) {
+              const force = (180 - dist) / 180;
+              p.vx += (dx / dist) * force * .012;
+              p.vy += (dy / dist) * force * .006;
+            }
+          }
+
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= .992;
+          p.vy *= .998;
+
+          if (p.y < -30 || p.x < -40 || p.x > width + 40) Object.assign(p, createParticle(false));
+
+          const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+          gradient.addColorStop(0, `hsla(${p.hue}, 90%, 70%, ${p.alpha})`);
+          gradient.addColorStop(1, `hsla(${p.hue}, 90%, 55%, 0)`);
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize, { passive: true });
+      window.addEventListener('pointermove', (event) => {
+        pointer.x = event.clientX;
+        pointer.y = event.clientY;
+        pointer.active = true;
+      }, { passive: true });
+      window.addEventListener('pointerleave', () => { pointer.active = false; }, { passive: true });
+
+      resize();
+      draw();
+    })();
+  </script>
+</body>
+
+</html>
