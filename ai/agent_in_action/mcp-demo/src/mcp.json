@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "my-mcp-server": {
+      "command": "node",
+      "args": [
+        "src/my-mcp-server.mjs"
+      ],
+      "env": {
+        "OPENAI_API_KEY": "${env:OPENAI_API_KEY}",
+        "DOTENV_CONFIG_PATH": "./.env"
+      }
+    }
+  }
+}

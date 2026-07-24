@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜甜AI日报 - 2026年07月17日</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                         "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            background: linear-gradient(135deg, #fdf6f0 0%, #fef0eb 50%, #fdf6f0 100%);
+            min-height: 100vh;
+            color: #3d2c2a;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            padding: 48px 20px 32px;
+            background: linear-gradient(180deg, rgba(232,133,124,0.08) 0%, transparent 100%);
+        }
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #d4736a, #e8857c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        .header .subtitle {
+            font-size: 0.95em;
+            color: #a0807a;
+            font-weight: 400;
+        }
+
+        .top-highlight {
+            max-width: 960px;
+            margin: 0 auto 16px;
+            padding: 0 20px;
+        }
+        .highlight-card {
+            background: linear-gradient(135deg, #fff5f3, #ffffff);
+            border-radius: 16px;
+            padding: 20px 24px;
+            border: 1.5px solid rgba(232,133,124,0.2);
+            box-shadow: 0 4px 20px rgba(232,133,124,0.08);
+        }
+        .highlight-card .hl-label {
+            font-size: 0.78em;
+            color: #e8857c;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .highlight-card .hl-title {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #3d2c2a;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+            gap: 20px;
+        }
+        @media (max-width: 520px) {
+            .container { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.6em; }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(61,44,42,0.06);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid rgba(232,133,124,0.1);
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(232,133,124,0.15);
+            border-color: rgba(232,133,124,0.25);
+        }
+        .card .source-badge {
+            display: inline-block;
+            font-size: 0.78em;
+            color: #a0807a;
+            margin-bottom: 10px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .card h3 {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            color: #3d2c2a;
+        }
+        .card .summary {
+            font-size: 0.9em;
+            color: #6b5550;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+        .card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .card .tag {
+            display: inline-block;
+            background: #fdf0ed;
+            color: #c0514a;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .card .time {
+            font-size: 0.75em;
+            color: #bfa8a2;
+            margin-top: 12px;
+        }
+        .card .external-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            opacity: 0.3;
+            font-size: 0.85em;
+            transition: opacity 0.2s;
+        }
+        .card:hover .external-icon {
+            opacity: 0.7;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px 20px 48px;
+            color: #bfa8a2;
+            font-size: 0.85em;
+        }
+        .footer .stats {
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #a0807a;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🍩 甜甜AI日报 - 2026年07月17日</h1>
+        <p class="subtitle">精选 10 条今日AI行业资讯 · 让阅读更甜一点</p>
+    </div>
+
+    <div class="top-highlight">
+        <div class="highlight-card">
+            <div class="hl-label">🔥 今日焦点</div>
+            <div class="hl-title">WAIC 2026 上海开幕，AI产业从"拼模型大小"全面转向"拼落地能力"；全球企业加速采用中国开源模型，DeepSeek 成最大赢家</div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- 1. WAIC 2026 -->
+        <a class="card" href="https://news.cgtn.com/news/2026-07-17/Beyond-bigger-models-What-WAIC-2026-reveals-about-AI-s-next-chapter-1OQOdVTqqsg/p.html" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 CGTN / 中国日报</div>
+            <h3>WAIC 2026 上海开幕：AI 从"更大模型"转向"产业落地"</h3>
+            <p class="summary">2026世界人工智能大会今日在上海开幕，规模创历届之最——超10万平米展区、1100+企业参展、300余项全球首发产品。九位图灵奖和诺贝尔奖得主出席。大会核心信号明确：AI竞争已从追求更大模型转向工业级部署，AI Agent、具身智能、人形机器人成为三大主线。IDC预测全球AI Agent市场2025-2030年复合增长率达139%。</p>
+            <div class="tags">
+                <span class="tag">#WAIC2026</span>
+                <span class="tag">#AI Agent</span>
+                <span class="tag">#具身智能</span>
+                <span class="tag">#产业落地</span>
+            </div>
+            <div class="time">⏰ 2026年7月17日</div>
+        </a>
+
+        <!-- 2. Chinese models takeover -->
+        <a class="card" href="https://techcrunch.com/2026/07/14/the-real-ai-race-may-no-longer-be-at-the-frontier-open-models-hugging-face/" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 TechCrunch</div>
+            <h3>全球企业加速转向中国AI模型，DeepSeek成最大赢家</h3>
+            <p class="summary">DoorDash、Airbnb、西门子等西方企业正将后端AI系统从美国模型切换至DeepSeek、Z.ai等中国开源模型。Hugging Face数据显示，中国开源模型占今春下载量的41%，首次超越美国。OpenRouter平台上使用量前六名全部来自中国公司（腾讯、小米、DeepSeek、MiniMax、Z.ai）。成本优势和几乎追平的性能差距正形成"结构性裂缝"。</p>
+            <div class="tags">
+                <span class="tag">#DeepSeek</span>
+                <span class="tag">#开源模型</span>
+                <span class="tag">#中国AI</span>
+                <span class="tag">#行业趋势</span>
+            </div>
+            <div class="time">⏰ 2026年7月14日</div>
+        </a>
+
+        <!-- 3. Kimi K3 -->
+        <a class="card" href="https://www.tmtpost.com/8069058.html" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 钛媒体</div>
+            <h3>Moonshot AI 发布全球最大开源模型 Kimi K3：2.8万亿参数</h3>
+            <p class="summary">北京AI初创公司月之暗面（Moonshot AI）发布Kimi K3，以2.8万亿参数成为全球最大开源模型。采用MoE架构（896个专家，每次查询仅激活约16个），在编码和长程推理上对标Claude Fable 5和GPT-5.6 Sol。公司刚完成20亿美元融资，估值超200亿美元，但免费开源的商业模式能否持续仍存疑问。</p>
+            <div class="tags">
+                <span class="tag">#MoonshotAI</span>
+                <span class="tag">#Kimi K3</span>
+                <span class="tag">#开源</span>
+                <span class="tag">#MoE</span>
+            </div>
+            <div class="time">⏰ 2026年7月17日</div>
+        </a>
+
+        <!-- 4. Google Gemini delay -->
+        <a class="card" href="https://www.thestar.com.my/tech/tech-news/2026/07/17/google-gemini-launch-delayed-as-tech-falls-short-of-internal-goals-bloomberg-news-reports" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 Bloomberg</div>
+            <h3>Google Gemini 3.5 Pro 延期数月，Alphabet股价下跌近3%</h3>
+            <p class="summary">据彭博社报道，Alphabet旗下Gemini 3.5 Pro模型远落后于内部计划，已错过6月发布目标。内部工程师对进度表示担忧，而此时OpenAI刚发布GPT-5.6系列，Anthropic的模型也在多项基准上超越Gemini。消息公布后Alphabet股价下跌近3%。分析人士指出Google在AI竞赛中正从领先者变为追赶者。</p>
+            <div class="tags">
+                <span class="tag">#Google</span>
+                <span class="tag">#Gemini</span>
+                <span class="tag">#模型竞赛</span>
+            </div>
+            <div class="time">⏰ 2026年7月17日</div>
+        </a>
+
+        <!-- 5. DeepSeek chips + IPO -->
+        <a class="card" href="https://techcrunch.com/2026/07/14/deepseek-reportedly-in-talks-to-raise-1-5b-then-ipo/" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 TechCrunch / Reuters</div>
+            <h3>DeepSeek 研发自有AI芯片，同步推进150亿美元IPO</h3>
+            <p class="summary">DeepSeek双线出击：一方面正早期研发自有推理芯片以减少对Nvidia和华为的依赖；另一方面据报在洽谈15亿美元融资（估值约710亿），计划2027年IPO。Vercel数据显示，DeepSeek在6月占其企业网关23%的token处理量。从模型到芯片的垂直整合策略，显示其瞄准AI全栈自主可控的野心。</p>
+            <div class="tags">
+                <span class="tag">#DeepSeek</span>
+                <span class="tag">#AI芯片</span>
+                <span class="tag">#IPO</span>
+                <span class="tag">#垂直整合</span>
+            </div>
+            <div class="time">⏰ 2026年7月14日</div>
+        </a>
+
+        <!-- 6. 29 countries -->
+        <a class="card" href="https://news.cgtn.com/news/2026-07-17/Beyond-bigger-models-What-WAIC-2026-reveals-about-AI-s-next-chapter-1OQOdVTqqsg/p.html" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 CGTN</div>
+            <h3>29国签署协议，世界人工智能合作组织正式成立</h3>
+            <p class="summary">WAIC 2026前夕，来自29个国家的代表在上海签署《世界人工智能合作组织成立协议》，标志着AI全球治理迈出关键一步。该组织旨在协调AI安全标准、促进技术共享、弥合全球AI鸿沟。此举被解读为在美国出口管制背景下，多边主义在AI治理领域的重要实践，也是中国在全球AI治理中话语权提升的体现。</p>
+            <div class="tags">
+                <span class="tag">#AI治理</span>
+                <span class="tag">#国际合作</span>
+                <span class="tag">#WAIC2026</span>
+            </div>
+            <div class="time">⏰ 2026年7月16日</div>
+        </a>
+
+        <!-- 7. OpenAI turmoil -->
+        <a class="card" href="https://www.theverge.com/archives/ai-artificial-intelligence/2026/7/1" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 The Verge</div>
+            <h3>OpenAI 高层持续动荡：首席未来学家、AGI负责人相继离职</h3>
+            <p class="summary">OpenAI在GPT-5.6发布后经历新一轮高管地震：首席未来学家Joshua Achiam、AGI负责人Fidji Simo以及安全主管Johannes Heidecke先后宣布离职。Greg Brockman接棒产品职责。与此同时，OpenAI宣布关闭ChatGPT浏览器、推出ChatGPT Work平台，产品线频繁调整引发外界对其战略稳定性的担忧。</p>
+            <div class="tags">
+                <span class="tag">#OpenAI</span>
+                <span class="tag">#人事变动</span>
+                <span class="tag">#GPT-5.6</span>
+            </div>
+            <div class="time">⏰ 2026年7月</div>
+        </a>
+
+        <!-- 8. Panshi 2.0 -->
+        <a class="card" href="https://news.cnr.cn/native/gd/kx/20260717/t20260717_527715101.shtml" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 央广网 / 新华网</div>
+            <h3>中科院发布磐石科学基础大模型2.0，60+科学基准超GPT-5.5</h3>
+            <p class="summary">中国科学院在WAIC上发布磐石·科学基础大模型2.0，融合通用AI与专业科学能力，在60余项科学基准上超越GPT-5.5和Gemini 3.1 Pro。已在天文（稀有天体识别提升50%）、化学（自主材料发现）、流体力学仿真（约10秒出结果，误差小于5%）等场景部署。标志着"通专一体"的科学智能新范式落地。</p>
+            <div class="tags">
+                <span class="tag">#中科院</span>
+                <span class="tag">#科学智能</span>
+                <span class="tag">#磐石大模型</span>
+                <span class="tag">#AI4Science</span>
+            </div>
+            <div class="time">⏰ 2026年7月17日</div>
+        </a>
+
+        <!-- 9. Nvidia x Toyota -->
+        <a class="card" href="https://www.163.com/dy/article/L1VH67GM051481US.html" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 网易 / 日经</div>
+            <h3>Nvidia 与丰田深化合作，AI 进入汽车制造与智慧城市</h3>
+            <p class="summary">Nvidia与丰田汽车于7月14日宣布全面深化AI合作，范围覆盖三大领域：Woven City智慧城市项目将全面搭载Nvidia AI平台；汽车装配线引入Omniverse数字孪生进行虚拟调试；机器人产线部署Isaac平台实现智能自动化。这一合作被业界视为"AI+制造业"的标杆案例，标志着AI正从虚拟世界进入物理生产线。</p>
+            <div class="tags">
+                <span class="tag">#Nvidia</span>
+                <span class="tag">#丰田</span>
+                <span class="tag">#数字孪生</span>
+                <span class="tag">#智慧城市</span>
+            </div>
+            <div class="time">⏰ 2026年7月14日</div>
+        </a>
+
+        <!-- 10. Reflection AI -->
+        <a class="card" href="https://ca.finance.yahoo.com/news/ai-startup-reflection-signs-over-110942457.html" target="_blank" rel="noopener">
+            <span class="external-icon">🔗</span>
+            <div class="source-badge">📰 Yahoo Finance</div>
+            <h3>Reflection AI 签署超10亿美元算力大单，AI基础设施投资白热化</h3>
+            <p class="summary">由前Google DeepMind研究员创立的AI初创公司Reflection AI与云计算平台Nebius签署超10亿美元算力合作协议。此前Reflection已于6月与SpaceX签约（约每月1.5亿美元至2029年）。接连两笔巨额算力订单，折射出顶级AI人才创业对大规模推理基础设施的渴求，也预示着AI算力市场正成为新的超级赛道。</p>
+            <div class="tags">
+                <span class="tag">#算力</span>
+                <span class="tag">#AI基础设施</span>
+                <span class="tag">#ReflectionAI</span>
+                <span class="tag">#融资</span>
+            </div>
+            <div class="time">⏰ 2026年7月14日</div>
+        </a>
+
+    </div>
+
+    <div class="footer">
+        <div class="stats">📊 今日覆盖：大模型竞赛 · 产业落地 · AI芯片 · 科学智能 · 全球治理 · 算力基建 · 企业动态</div>
+        <div>🍩 甜甜AI日报 · 用心精选每日AI资讯 · 2026年07月17日</div>
+    </div>
+</body>
+</html>
