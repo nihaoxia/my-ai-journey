@@ -1,4 +1,4 @@
-// 列表组件
+// 列表组件 
 const TodoList = ({
   todos,
   onToggle,
@@ -11,9 +11,10 @@ const TodoList = ({
           <li className="empty">No todos yet!</li>
         ) : (
           todos.map(todo => (
-            <li key={todo.id}
+            <li
+              key={todo.id}
               className={todo.completed ? 'completed' : ''}>
-              <label >
+              <label>
                 <input
                   type="checkbox"
                   checked={todo.completed}

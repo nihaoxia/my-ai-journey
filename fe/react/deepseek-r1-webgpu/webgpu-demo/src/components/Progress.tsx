@@ -17,17 +17,17 @@ function formatBytes(size) {
 
 const Progress = ({ text, percentage, total }) => {
   // console.log(text, percentage, total);
-  // es6+风格
+  // es6+ 编程风格 
   percentage ??= 0;
   console.log(percentage);
   return (
     <div className="w-full bg-gray-100 text-left rounded-lg overflow-hidden mb-0.5">
       <div
-        // {js 运行区域 返回？style返回样式的 key:value对象}
+        // { js 运行区域 返回？style 返回一个行内样式的key:value对象   }
         style={{ width: `${percentage}%` }}
         className="bg-blue-400 whitespace-nowrap px-1 text-sm">
-        {/* { js 运行} */}
-        {text}{percentage.toFixed(2)}%{isNaN(total) ? "" : `of${formatBytes(total)}`}
+        {/* { js 运行 } */}
+        {text}{percentage.toFixed(2)}%{isNaN(total) ? "" : `of ${formatBytes(total)}`}
       </div>
     </div>
   )

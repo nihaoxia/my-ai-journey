@@ -6,7 +6,7 @@ const TodoStats = ({
 }) => {
   return (
     <div className="todo-stats">
-      <p>Total:{total}|Active:{active}|Completed:{completed}</p>
+      <p>Total: {total} | Active: {active} | Completed: {completed}</p>
       {
         completed > 0 && (
           <button

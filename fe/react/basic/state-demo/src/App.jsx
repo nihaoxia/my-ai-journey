@@ -1,14 +1,14 @@
 import {
   useState
 } from 'react';
-//重的 耗时
+// 重的， 耗时的计算
 function heavyComputation() {
-  console.log('开始执行 heavyComputation...');
-  const startTime = performance.now();
-  // 网页性能优化指标  performance 性能表现 api
+  console.log('开始执行 heavyComputation....');
+  // 网页性能优化指标   performance  性能表现 api 
+  const startTime = performance.now(); // 当前时间
   const result = [];
-  for (let i = 0; i < 100; i++) {
-    result.push({ id: i, name: `用户${i}` });
+  for (let i = 0; i < 10000; i++) {
+    result.push({ id: i, name: `用户-${i}` });
   }
   const duration = performance.now() - startTime;
   console.log(duration);
@@ -17,15 +17,15 @@ function heavyComputation() {
 
 function App() {
   // const [users] = useState([
-  //   { id: 1, name: '陈俊璋' },
-  //   { id: 2, name: '胡适' },
+  //   {id:1, name: '陈俊璋'},
+  //   {id:2, name: '胡适'},
   // ])
-  // 状态的初始值不是直接给的 可能要经过一个计算
-  // useState (函数)
-  //const [users] = useState(heavyComputation());
+  // 状态的初始值， 不是直接给的， 可能要经过计算， 
+  // useState(函数) 
+  // const [users] = useState(heavyComputation());
   const [users] = useState(() => heavyComputation());
   const [filterText, setFilterText] = useState('');
-  // 数据状态 state props computed 计算属性
+  // 数据状态 state, props , computed 计算属性
   const filteredUsers = users.filter(user =>
     user.name.includes(filterText)
   )

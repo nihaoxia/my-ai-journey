@@ -4,8 +4,8 @@ import { useState } from 'react';
 const TodoInput = ({ onAdd }) => {
   console.log(onAdd);
   // 共享状态只有父组件持有
-  const [inputValue, setInputValue] = useState('');
-  // 当需要报告父组件的时候 执行
+  const [inputValue, setInputValue] = useState("");
+  // 当需要报告父组件的时候，执行
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd(inputValue);

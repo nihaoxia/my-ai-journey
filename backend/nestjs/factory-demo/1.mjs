@@ -1,0 +1,54 @@
+// 蜜雪冰城的产品之一 冰淇淋
+// 企业，很多的产品，每一种产品都实现了相同的接口(方法)
+// 一个企业这么多产品，开发怎么记住？还有这么多工厂呢
+// 工厂模式来解决 不需要了解工厂里面这么多类的细节
+// 只要和工厂类打交道就好了
+class IceCream {
+  constructor() {
+    this.name = '冰淇淋'
+    this.price = 3
+  }
+  show() {
+    console.log(`${this.name} ${this.price}元`)
+  }
+}
+
+class LemonTea {
+  constructor() {
+    this.name = '柠檬水'
+    this.price = 4
+  }
+  show() {
+    console.log(`${this.name} ${this.price}元`)
+  }
+}
+
+class MilkTea {
+  constructor() {
+    this.name = '牛奶'
+    this.price = 5
+  }
+  show() {
+    console.log(`${this.name} ${this.price}元`)
+  }
+}
+
+// 工厂类
+class MixueFactory {
+  static create(type) {
+    switch (type) {
+      case 'ice':
+        return new IceCream()
+      case 'lemon':
+        return new LemonTea()
+      case 'milk':
+        return new MilkTea()
+    }
+  }
+}
+// 管理并返回冰淇淋这个类
+const drink1 = MixueFactory.create('ice')
+drink1.show();
+const drink2 = MixueFactory.create('lemon')
+drink2.show();
+

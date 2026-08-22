@@ -1,6 +1,8 @@
-"hello-world".replace(/-(\w)/,
-(...args)=>{
-    console.log(args);
-    return ''
-}
+const res = "hello-world".replace(
+  /-(\w)/, 
+  (_, c)=>{  
+    // console.log(args);
+    return c.toUpperCase();
+  }
 )
+console.log(res);
