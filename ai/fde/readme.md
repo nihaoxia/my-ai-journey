@@ -11,6 +11,7 @@ Soft Engineer(古法软件工程师) copilot(代码建议，人为主力 AI辅�
  ->Forward Deployed Engineer(业务结合)
  - 米国招聘网站  indeed.com
 
+  0 
 ## FDE 公司
  OpenAI成立了一个FDE公司, tomoro
  Anthropic 和高盛/黑石 成立ai服务公司
