@@ -1,0 +1,14 @@
+DeepSeek-R1 WebGPU 浏览器端推理引擎 2026.08 - 至今
+独立开发 项目仓库：基于 Hugging Face transformers.js 官方示例二次开发
+技术栈：React 19、TypeScript、Vite 8、Tailwind CSS 4、@huggingface/transformers 3.7、
+ONNX Runtime Web、WebGPU API、Web Worker、ES Modules
+项目介绍：浏览器端 DeepSeek-R1-Distill-Qwen-1.5B 本地推理应用，全链路基于 WebGPU 加速，
+零数据外发、加载后可离线使用。
+1. WebGPU 端侧推理与单例 Pipeline：AutoModelForCausalLM 加载 DeepSeek-R1-Distill-Qwen-1.5B-ONNX，
+q4f16 量化 + device: "webgpu" 在 GPU 推理；TextGenerationPipeline 单例懒加载 tokenizer/model，全生命周期只初始化一次。
+2. Web Worker 异步推理与消息协议：tokenizer/generate/streamer 全部下沉 worker，主线程 postMessage 通信；
+按 loading/initiate/progress/done/ready/start/update/complete/error 设计消息协议，承接分片下载进度、流式 token、TPS 统计与错误回传。
+3. 流式生成与 TPS 统计：TextStreamer 双回调逐 token 推送增量输出，performance.now() 计算 tps 实时反映推理吞吐。
+4. Shader 预编译与模型预热：load 阶段以 tokenizer("a") + max_new_tokens:1 触发一次推理提前编译 Shader、降低首 token 延迟；
+navigator.gpu.requestAdapter() 探测能力，无适配器降级提示页。
+5. 分片下载进度可视化与暗色适配：progress_callback 回传 initiate/progress/done，Progress 组件按 file+percentage+total 渲染并发下载条；Tailwind 4 暗色模式，支持 Enter 发送 / Shift+Enter 换行。

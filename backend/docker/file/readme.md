@@ -12,3 +12,11 @@ DOCKER 照着做，它就能自动做出一摸一样的Docker 镜像,运行
   docker pull
 
   Dockerfile 是发布项目的标准方式之一
+
+## todos 全栈项目
+- 前端 react + ts + zustand
+- 后端 nest.js + Todo Module
+- nginx
+  80 -> 3000
+  跨域
+  
