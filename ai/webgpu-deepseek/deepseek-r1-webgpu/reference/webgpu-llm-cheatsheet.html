@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebGPU LLM 速查</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body><main>
+  <h1>WebGPU LLM 面试速查</h1>
+  <p class="note">对应项目：DeepSeek-R1-Distill-Qwen-1.5B-ONNX 浏览器端推理。</p>
+  <h2>调用链</h2>
+  <div class="flow">React 主线程 → postMessage → Web Worker → tokenizer → model.generate → ONNX Runtime Web → WebGPU GPU → TextStreamer → postMessage → UI</div>
+  <h2>关键术语</h2>
+  <table><thead><tr><th>术语</th><th>项目中的含义</th><th>追问抓手</th></tr></thead><tbody>
+    <tr><td>Tokenizer</td><td>把文本映射为 token id；生成后再把 id 解码成文本。</td><td>为什么模型不能直接吃字符串？</td></tr>
+    <tr><td>Chat template</td><td>按模型训练约定拼接 role、内容和 assistant generation prompt。</td><td>换模型时为什么可能必须换模板？</td></tr>
+    <tr><td>q4f16</td><td>模型权重的量化/半精度组合配置，目标是降低显存和带宽压力。</td><td>精度、体积、速度如何权衡？</td></tr>
+    <tr><td>WebGPU</td><td>浏览器 GPU API；代码通过 <code>navigator.gpu.requestAdapter()</code> 探测能力。</td><td>adapter、device、pipeline 各是什么？</td></tr>
+    <tr><td>Worker</td><td>承接模型加载、分词和生成调度，减少主线程计算负担；下载本身是异步 I/O。</td><td>主线程如何获得结果？</td></tr>
+    <tr><td>TextStreamer</td><td>逐步接收生成 token，并回调增量文本。</td><td>为什么能做到打字机效果？</td></tr>
+    <tr><td>TPS</td><td><code>numTokens / elapsedSeconds</code>，近似表示生成吞吐。</td><td>首 token 延迟和持续 TPS 有何不同？</td></tr>
+    <tr><td>Shader warmup</td><td>加载后用短输入生成 1 token，提前触发 GPU shader 编译。</td><td>为什么第一次请求更慢？</td></tr>
+  </tbody></table>
+  <h2>代码事实边界</h2>
+  <p>Worker 已实现模型加载、WebGPU 探测、生成、流式回调和停止条件消息。当前 <code>App.tsx</code> 对 <code>update</code>/<code>complete</code> 没有更新消息状态，<code>onInterrupt</code> 为空，因此 UI 闭环和中断按钮尚未完成。面试时应按此事实表述。</p>
+  <p>这是静态代码核对，尚未证明真实 GPU 推理成功。<code>past_key_values</code> 的跨请求传入被注释，不能说已经完成跨轮 KV 缓存复用；这不等于库在单次生成内部完全没有 KV cache。</p>
+  <p>首次使用需要下载网页、模型和运行时资源；本地推理不能直接推出“零网络请求”。当前没有断网刷新测试，不能保证完整离线重启。1 token 预热旨在提前触发部分初始化和编译，但没有性能基准证明具体收益，也不保证覆盖所有后续形状。</p>
+  <p><code>token_callback_function</code> 与文本回调的粒度不同，不能把每段文本称为一个 token。当前 TPS 按回调次数计数，从首次回调开始计时，是近似指标，未测量用户提交到首个输出的延迟。</p>
+  <p><a href="../lessons/0001-two-minute-project-story.html">返回第一课</a> · <a href="https://github.com/huggingface/transformers.js#quick-tour">官方库原始资料</a></p>
+</main></body></html>

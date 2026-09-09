@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第一课：两分钟讲清项目</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body><main>
+  <h1>第一课：两分钟讲清项目</h1>
+  <p><img src="../public/logo.png" alt="DeepSeek 项目标志" width="64" height="64" style="object-fit:contain"></p>
+  <p>目标：不背宣传语，能从一次用户输入开始，顺着数据流解释到 GPU，再回到界面。</p>
+  <div class="lead"><strong>先记住一句话：</strong>这是一个把小型因果语言模型放进浏览器，用 Web Worker 承载 Transformers.js 推理，并通过 WebGPU 调用 GPU 的本地聊天 Demo。</div>
+  <h2>1. 先画数据流</h2>
+  <div class="flow">用户输入 → React state → postMessage(generate) → Worker 分词 → model.generate → WebGPU → TextStreamer → update 消息 → React 渲染</div>
+  <p>这是设计中的完整链路；最后一步的回答渲染尚未接通。浏览器里有两个分工：主线程照顾页面，Worker 承接推理任务；GPU 是执行模型计算的硬件资源。Worker 和 GPU 是两个不同概念。</p>
+  <p><strong>推理是什么？</strong>使用已经训练好的模型产生输出。token 是模型处理的文本单位，不一定等于一个汉字或一个单词；tokenizer 把输入转成这些单位的编号，生成器逐步预测接下来的编号，再解码成文本。</p>
+  <p><strong>库的分工：</strong>Transformers.js 提供加载、分词和生成接口，ONNX 是模型表示格式，ONNX Runtime Web 负责执行模型，WebGPU 提供浏览器访问 GPU 的接口。React 状态更新和普通分词代码仍由 CPU 执行，因此“全链路基于 WebGPU 加速”需要改为“模型推理使用 WebGPU 后端”。</p>
+  <p>加载阶段则是：<code>load</code> 消息 → 下载 tokenizer/ONNX 分片 → 进度回调 → 用 1 token 预热 → <code>ready</code>。</p>
+  <h2>2. 面试口述稿</h2>
+  <div class="script">这个项目基于 Hugging Face 官方示例二次开发，目标是在浏览器本地运行 DeepSeek-R1-Distill-Qwen-1.5B。React 负责界面；Web Worker 承接模型加载、分词和文本生成。Transformers.js 加载 ONNX 模型，借助 ONNX Runtime Web 的 WebGPU 后端使用本机 GPU。输入先转换成 token 编号，模型逐步生成后续 token，再通过 TextStreamer 回传增量文本。主线程发送的命令用 type，Worker 回传的结果用 status。当前仓库已编写 Worker 侧推理流程和前端加载进度，但回答渲染与中断按钮还未接通。具体二次开发贡献需要结合自己的实际工作补充，不能把示例原有能力都算作个人设计。</div>
+  <p>证据入口：<a href="../src/worker.js">worker.js</a> 第 15–36 行（模型加载）、第 52–57 行（输入模板）、第 84–123 行（流式消息及生成）；<a href="../src/App.tsx">App.tsx</a> 第 88–95 行（待实现消息处理）。下载本身是异步 I/O；Worker 主要隔离分词、生成调度等工作，不能把它简单说成“异步下载必须用 Worker”。</p>
+  <h2>3. 主动回忆</h2>
+  <div class="box"><p><strong>不看上面的稿子，回答：</strong>为什么 Worker 能改善体验，但不能让 GPU 计算本身变快？</p><button onclick="document.querySelector('#a1').classList.toggle('show')">显示参考答案</button><p id="a1" class="answer">Worker 解决的是主线程被长任务占用的问题，保持界面响应；GPU 是否更快取决于模型规模、算子支持、显存/带宽、浏览器后端和编译开销。两者分别解决调度隔离和计算吞吐问题。</p></div>
+  <div class="box"><p><strong>追问：</strong><code>q4f16</code> 为什么可能降低资源占用？</p><button onclick="document.querySelector('#a2').classList.toggle('show')">显示参考答案</button><p id="a2" class="answer">量化减少权重每个参数所需的位数，f16 部分保留较高数值精度；权重体积和传输/显存压力通常下降，但实际速度和精度取决于算子与硬件支持。</p></div>
+  <h2>4. 今天的边界</h2>
+  <p>不要把“代码里发送了 <code>update</code>”说成“页面已经流式渲染”。面试官追问实现位置时，应指出 <code>src/worker.js</code> 发送消息，而 <code>src/App.tsx</code> 的对应分支目前为空。更多术语见 <a href="../reference/webgpu-llm-cheatsheet.html">速查表</a>，资料见 <a href="../RESOURCES.md">资源索引</a>。</p>
+  <p><em>下次复习前，尝试自己画出调用链，并向老师追问任何不清楚的词。</em></p>
+  <p>本课推荐原始资料：<a href="https://github.com/huggingface/transformers.js#quick-tour">Transformers.js 官方 README：Quick tour</a>。先读 ONNX Runtime、device 和 dtype 三处说明即可。该页面当前示例版本比项目 3.7.1 新，API 细节以项目版本源码为准。</p>
+</main></body></html>
